@@ -8,9 +8,9 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import thaumcraft.common.entities.ITaintedMob;
+
 import thaumcraft.common.entities.monster.EntityTaintacleSmall;
-import thaumcraft.common.lib.world.DamageSourceThaumcraft;
+
 
 public class EntityTaintacleMinion extends EntityTaintacleSmall {
 
@@ -29,7 +29,7 @@ public class EntityTaintacleMinion extends EntityTaintacleSmall {
 	    double d0 = 16.0D;
 	    Entity entity = null;
 	    
-	    List ents = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getAABBPool().getAABB(this.posX, this.posY, this.posZ, this.posX, this.posY, this.posZ).expand(16.0D, 8.0D, 16.0D));
+	    List ents = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(this.posX, this.posY, this.posZ, this.posX, this.posY, this.posZ).expand(16.0D, 8.0D, 16.0D));
 	    double distance;
 	    if (ents.size() > 0)
 	    {

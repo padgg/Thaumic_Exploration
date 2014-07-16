@@ -13,12 +13,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
-import thaumcraft.client.fx.FXLightningBolt;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent.ClientCustomPacketEvent;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import flaxbeard.thaumicexploration.ThaumicExploration;
 import flaxbeard.thaumicexploration.tile.TileEntityAutoSorter;
+import thaumcraft.client.fx.bolt.FXLightningBolt;
 
 public class TXClientPacketHandler extends TXServerPacketHandler{
 	

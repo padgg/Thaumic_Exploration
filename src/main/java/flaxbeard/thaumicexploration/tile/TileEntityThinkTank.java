@@ -80,7 +80,7 @@ public class TileEntityThinkTank extends TileEntity implements ISidedInventory
     
 	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getRenderBoundingBox() {
-	        return AxisAlignedBB.getAABBPool().getAABB(this.xCoord - 1 - this.space, this.yCoord - 1, this.zCoord - 1 - this.space, this.xCoord + 1 + this.space, this.yCoord + 1, this.zCoord + 1 + this.space);
+	        return AxisAlignedBB.getBoundingBox(this.xCoord - 1 - this.space, this.yCoord - 1, this.zCoord - 1 - this.space, this.xCoord + 1 + this.space, this.yCoord + 1, this.zCoord + 1 + this.space);
 	}
 
     /**

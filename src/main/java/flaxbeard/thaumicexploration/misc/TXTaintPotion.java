@@ -2,8 +2,8 @@ package flaxbeard.thaumicexploration.misc;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import thaumcraft.api.potions.PotionFluxTaint;
 import thaumcraft.client.lib.UtilsFX;
-import thaumcraft.common.items.PotionFluxTaint;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

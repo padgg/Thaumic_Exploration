@@ -1,5 +1,6 @@
 package flaxbeard.thaumicexploration.event;
 
+import baubles.api.BaublesApi;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
@@ -47,18 +48,17 @@ import net.minecraftforge.event.world.WorldEvent;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.lwjgl.opengl.GL11;
 
+import thaumcraft.api.damagesource.DamageSourceThaumcraft;
+import thaumcraft.api.entities.ITaintedMob;
 import thaumcraft.api.wands.WandRod;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.entities.ITaintedMob;
 import thaumcraft.common.entities.golems.ItemGolemBell;
 import thaumcraft.common.entities.golems.ItemGolemPlacer;
 import thaumcraft.common.items.wands.ItemWandCasting;
-import thaumcraft.common.lib.world.DamageSourceThaumcraft;
 import thaumcraft.common.tiles.TileJarFillable;
-import baubles.api.BaublesApi;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
@@ -682,7 +682,7 @@ public class TXEventHandler {
 	public void handleTaint(LivingHurtEvent event) {
 		if (event.entityLiving instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) event.entityLiving;
-			if (player.onGround && hasBauble(ThaumicExploration.tentacleRing,BaublesApi.getBaubles(player))) {
+			if (player.onGround && hasBauble(ThaumicExploration.tentacleRing, BaublesApi.getBaubles(player))) {
 				ArrayList<ChunkCoordinates> safeSpots = safeBlocks(player);
 				if (safeSpots.size() > 0) {
 					int rand = player.worldObj.rand.nextInt(safeSpots.size());

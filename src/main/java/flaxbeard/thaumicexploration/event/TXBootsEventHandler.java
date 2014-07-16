@@ -18,9 +18,9 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.INode;
+import thaumcraft.api.potions.PotionFluxTaint;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.items.PotionFluxTaint;
 import thaumcraft.common.items.wands.ItemWandCasting;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
 import thaumcraft.common.tiles.TileNode;
@@ -229,10 +229,10 @@ public class TXBootsEventHandler
 	        	}
         	}
         }
-        if (player.getActivePotionEffect(PotionFluxTaint.fluxTaint) != null) {
+        if (player.getActivePotionEffect(PotionFluxTaint.instance) != null) {
         	for (int i = 0; i<10; i++) {
     			if (player.inventory.getStackInSlot(i) != null && player.inventory.getStackInSlot(i).getItem() == ThaumicExploration.charmTaint) {
-        		player.removePotionEffect(PotionFluxTaint.fluxTaint.id);	
+        		player.removePotionEffect(PotionFluxTaint.instance.id);
 				break;
 			}
         	}

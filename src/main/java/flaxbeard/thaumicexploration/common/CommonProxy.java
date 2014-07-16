@@ -1,7 +1,6 @@
 package flaxbeard.thaumicexploration.common;
 
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.client.fx.FXEssentiaTrail;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;

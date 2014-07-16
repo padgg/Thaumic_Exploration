@@ -18,11 +18,9 @@ import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileCrucible;
 
-import com.sun.xml.internal.bind.v2.TODO;
-
 import cpw.mods.fml.common.Loader;
 import flaxbeard.thaumicexploration.ThaumicExploration;
-import flaxbeard.thaumicexploration.integration.BotaniaIntegration;
+//import flaxbeard.thaumicexploration.integration.BotaniaIntegration;
 
 public class TileEntityEverfullUrn extends TileEntity implements IFluidTank,IFluidHandler {
 
@@ -170,37 +168,37 @@ public class TileEntityEverfullUrn extends TileEntity implements IFluidTank,IFlu
 			}
 			
 			if (this.drainTicks > 0 && drainType == 3) {
-				if (Loader.isModLoaded("Botania")) {
-					if (this.worldObj.getBlock(this.dX, this.dY, this.dZ) == BotaniaIntegration.getAltar()) {
-						TileEntity tile = ((this.worldObj.getTileEntity(this.dX, this.dY, this.dZ)));
-						if (BotaniaIntegration.needsWater(tile)) 
-						{
-
-							if (this.drainTicks % 5 == 0 && this.worldObj.isRemote && this.excessTicks < (40 * this.distance)) {
-								ThaumicExploration.proxy.spawnWaterAtLocation(this.worldObj, this.xCoord+0.5F, this.yCoord+1.1F, this.zCoord+0.5F, this.dX+0.5F, this.dY+1.1F, this.dZ+0.5F);
-				        		
-							}
-							this.excessTicks++;
-				        	this.drainTicks--;
-							if (this.drainTicks == 0) {
-								BotaniaIntegration.fillWater(tile);
-							}
-						}
-						else
-						{
-							this.drainTicks = 0;
-						}
-					}
-					else
-					{
-						this.drainTicks = 0;
-					}
-				}	
-				else
-				{
-					this.drainTicks = 0;
-				}
-			}
+				//if (Loader.isModLoaded("Botania")) {
+					//if (this.worldObj.getBlock(this.dX, this.dY, this.dZ) == BotaniaIntegration.getAltar()) {
+					//	TileEntity tile = ((this.worldObj.getTileEntity(this.dX, this.dY, this.dZ)));
+					//	if (BotaniaIntegration.needsWater(tile))
+					//	{
+//
+//							if (this.drainTicks % 5 == 0 && this.worldObj.isRemote && this.excessTicks < (40 * this.distance)) {
+//								ThaumicExploration.proxy.spawnWaterAtLocation(this.worldObj, this.xCoord+0.5F, this.yCoord+1.1F, this.zCoord+0.5F, this.dX+0.5F, this.dY+1.1F, this.dZ+0.5F);
+//
+//							}
+//							this.excessTicks++;
+//				        	this.drainTicks--;
+//							if (this.drainTicks == 0) {
+//								BotaniaIntegration.fillWater(tile);
+//							}
+//						}
+//						else
+//						{
+//							this.drainTicks = 0;
+//						}
+//					}
+//					else
+//					{
+//						this.drainTicks = 0;
+//					}
+//				}
+//				else
+//				{
+			    this.drainTicks = 0;
+//				}
+			//}
 			
 			if (this.drainTicks > 0 && drainType == 2) {
 				EntityPlayer player = this.burningPlayer;
@@ -274,21 +272,21 @@ public class TileEntityEverfullUrn extends TileEntity implements IFluidTank,IFlu
 										
 									}
 								}
-								if (Loader.isModLoaded("Botania")) {
-									if (this.worldObj.getBlock(this.xCoord+x, this.yCoord+y, this.zCoord+z) == BotaniaIntegration.getAltar()) {
-										TileEntity tile = ((this.worldObj.getTileEntity(this.xCoord+x, this.yCoord+y, this.zCoord+z)));
-										if (BotaniaIntegration.needsWater(tile)) 
-										{
-											distance=(float) Math.sqrt(Math.pow(x,2) + Math.pow(y,2) + Math.pow(z,2));
-											this.drainTicks = 100;
-											this.excessTicks = 0;
-											this.drainType = 3;
-											this.dX = this.xCoord+x;
-											this.dY = this.yCoord+y;
-											this.dZ = this.zCoord+z;
-											break;
-										}
-									}
+								//if (Loader.isModLoaded("Botania")) {
+								//	if (this.worldObj.getBlock(this.xCoord+x, this.yCoord+y, this.zCoord+z) == BotaniaIntegration.getAltar()) {
+								//		TileEntity tile = ((this.worldObj.getTileEntity(this.xCoord+x, this.yCoord+y, this.zCoord+z)));
+								//		if (BotaniaIntegration.needsWater(tile))
+								//		{
+								//			distance=(float) Math.sqrt(Math.pow(x,2) + Math.pow(y,2) + Math.pow(z,2));
+								//			this.drainTicks = 100;
+								//			this.excessTicks = 0;
+								//			this.drainType = 3;
+								//			this.dX = this.xCoord+x;
+								//			this.dY = this.yCoord+y;
+								//			this.dZ = this.zCoord+z;
+								//			break;
+								//		}
+								//	}
 								}
 							}
 						}

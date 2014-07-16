@@ -9,10 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.client.fx.FXBoreParticles;
-import thaumcraft.client.fx.FXBoreSparkle;
-import thaumcraft.client.fx.FXEssentiaTrail;
-import thaumcraft.client.fx.FXLightningBolt;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -39,6 +36,11 @@ import flaxbeard.thaumicexploration.tile.TileEntityFloatyCandle;
 import flaxbeard.thaumicexploration.tile.TileEntityReplicator;
 import flaxbeard.thaumicexploration.tile.TileEntityThinkTank;
 import flaxbeard.thaumicexploration.tile.TileEntityTrashJar;
+import thaumcraft.client.fx.bolt.FXLightningBolt;
+import thaumcraft.client.fx.particles.FXBoreParticles;
+import thaumcraft.client.fx.particles.FXBoreSparkle;
+import thaumcraft.client.fx.particles.FXEssentiaTrail;
+
 public class ClientProxy extends CommonProxy
 {
 	

@@ -6,6 +6,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 
+import flaxbeard.thaumicexploration.block.*;
+import flaxbeard.thaumicexploration.tile.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -54,16 +56,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import flaxbeard.thaumicexploration.block.BlockAutoSorter;
-import flaxbeard.thaumicexploration.block.BlockBootsIce;
-import flaxbeard.thaumicexploration.block.BlockBoundChest;
-import flaxbeard.thaumicexploration.block.BlockBoundJar;
-import flaxbeard.thaumicexploration.block.BlockCrucibleSouls;
-import flaxbeard.thaumicexploration.block.BlockEverfullUrn;
-import flaxbeard.thaumicexploration.block.BlockFloatyCandle;
-import flaxbeard.thaumicexploration.block.BlockReplicator;
-import flaxbeard.thaumicexploration.block.BlockThinkTank;
-import flaxbeard.thaumicexploration.block.BlockTrashJar;
 import flaxbeard.thaumicexploration.common.CommonProxy;
 import flaxbeard.thaumicexploration.enchantment.EnchantmentBinding;
 import flaxbeard.thaumicexploration.enchantment.EnchantmentDisarm;
@@ -88,15 +80,6 @@ import flaxbeard.thaumicexploration.misc.TXPotion;
 import flaxbeard.thaumicexploration.misc.TXTaintPotion;
 import flaxbeard.thaumicexploration.research.ModRecipes;
 import flaxbeard.thaumicexploration.research.ModResearch;
-import flaxbeard.thaumicexploration.tile.TileEntityAutoSorter;
-import flaxbeard.thaumicexploration.tile.TileEntityBoundChest;
-import flaxbeard.thaumicexploration.tile.TileEntityBoundJar;
-import flaxbeard.thaumicexploration.tile.TileEntityCrucibleSouls;
-import flaxbeard.thaumicexploration.tile.TileEntityEverfullUrn;
-import flaxbeard.thaumicexploration.tile.TileEntityFloatyCandle;
-import flaxbeard.thaumicexploration.tile.TileEntityReplicator;
-import flaxbeard.thaumicexploration.tile.TileEntityThinkTank;
-import flaxbeard.thaumicexploration.tile.TileEntityTrashJar;
 import flaxbeard.thaumicexploration.wand.StaffRodTransmutative;
 import flaxbeard.thaumicexploration.wand.WandRodAmberOnUpdate;
 import flaxbeard.thaumicexploration.wand.WandRodBreadOnUpdate;
@@ -201,6 +184,8 @@ public class ThaumicExploration {
 	public static int thinkTankJarID;
 	public static Block everfullUrn;
 	public static int everfullUrnID;
+    public static Block everburnUrn;
+    public static int everburnUrnID;
 	public static Block autoSorter;
 	public static int autoSorterID;
 	
@@ -254,6 +239,7 @@ public class ThaumicExploration {
 	public static boolean allowThinkTank;
 	public static boolean allowFood;
 	public static boolean allowUrn;
+    public static boolean allowbUrn;
 	public static boolean allowBoots;
 	public static boolean allowSojourner;
 	public static boolean allowMechanist;
@@ -338,6 +324,7 @@ public class ThaumicExploration {
 		allowThinkTank = config.get("Miscellaneous", "Enable Think Tank", true).getBoolean(true);
 		allowFood = config.get("Miscellaneous", "Enable Talisman of Nourishment", true).getBoolean(true);
 		allowUrn = config.get("Miscellaneous", "Enable Everfull Urn", true).getBoolean(true);
+        allowbUrn = config.get("Miscellaneous", "Enable Everburn Urn", true).getBoolean(true);
 		allowBoots = config.get("Miscellaneous", "Enable Boots of the Meteor/Comet", true).getBoolean(true);
 		allowSojourner = config.get("Miscellaneous", "Enable Sojourner's Wand Caps", true).getBoolean(true);
 		allowMechanist = config.get("Miscellaneous", "Enable Mechanist's Wand Caps", true).getBoolean(true);
@@ -351,6 +338,7 @@ public class ThaumicExploration {
 		tab = new TXTab(CreativeTabs.getNextID(), "thaumicExploration");
 		thinkTankJar = new BlockThinkTank(thinkTankJarID, false).setBlockName("thaumicexploration:thinkTankJar").setCreativeTab(tab).setBlockTextureName("thaumicExploration:blankTexture");
 		everfullUrn = new BlockEverfullUrn(everfullUrnID).setHardness(2.0F).setBlockName("thaumicexploration:everfullUrn").setCreativeTab(tab).setBlockTextureName("thaumicExploration:everfullUrn");
+        everburnUrn = new BlockEverburnUrn(everburnUrnID).setHardness(2.0F).setBlockName("thaumicexploration:everburnUrn").setCreativeTab(tab).setBlockTextureName("thaumicExploration:everfullUrn");
 		crucibleSouls = new BlockCrucibleSouls(crucibleSoulsID).setHardness(2.0F).setBlockName("thaumicexploration:crucibleSouls").setCreativeTab(tab).setBlockTextureName("thaumicExploration:crucible3");
 		replicator = new BlockReplicator(replicatorID).setHardness(4.0F).setBlockName("thaumicexploration:replicator").setCreativeTab(tab).setBlockTextureName("thaumicexploration:replicatorBottom");
 		meltyIce = new BlockBootsIce(meltyIceID).setBlockName("thaumicexploration:meltyIce").setHardness(0.5F).setLightOpacity(3).setStepSound(Block.soundTypeGlass).setBlockName("ice").setBlockTextureName("ice");
@@ -371,6 +359,7 @@ public class ThaumicExploration {
 		GameRegistry.registerBlock(boundJar, "boundJar");
 		GameRegistry.registerBlock(thinkTankJar, "thinkTankJar");
 		GameRegistry.registerBlock(everfullUrn, "everfullUrn");
+        GameRegistry.registerBlock(everburnUrn, "everburnUrn");
 		GameRegistry.registerBlock(crucibleSouls, "crucibleSouls");
 		GameRegistry.registerBlock(replicator, "replicator");
 
@@ -474,6 +463,7 @@ public class ThaumicExploration {
 		GameRegistry.registerTileEntity(TileEntityBoundJar.class, "tileEntityBoundJar");
 		GameRegistry.registerTileEntity(TileEntityThinkTank.class, "tileEntityThinkTank");
 		GameRegistry.registerTileEntity(TileEntityEverfullUrn.class, "tileEntityEverfullUrn");
+        GameRegistry.registerTileEntity(TileEntityEverburnUrn.class, "tileEntityEverburnUrn");
 		GameRegistry.registerTileEntity(TileEntityCrucibleSouls.class, "tileEntityCrucibleSouls");
 		GameRegistry.registerTileEntity(TileEntityReplicator.class, "tileEntityReplicator");
 		GameRegistry.registerTileEntity(TileEntityTrashJar.class, "tileEntityTrashJar");

@@ -29,7 +29,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
-import thaumcraft.client.fx.FXLightningBolt;
+
 import thaumcraft.common.config.ConfigBlocks;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent.ServerCustomPacketEvent;

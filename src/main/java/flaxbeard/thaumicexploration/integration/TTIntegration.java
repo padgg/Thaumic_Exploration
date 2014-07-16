@@ -7,11 +7,11 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import vazkii.tinkerer.common.enchantment.EnchantmentVampirism;
-import vazkii.tinkerer.common.enchantment.core.EnchantmentManager;
-import vazkii.tinkerer.common.lib.LibEnchantIDs;
-import vazkii.tinkerer.common.lib.LibMisc;
-import vazkii.tinkerer.common.lib.LibResearch;
+//import vazkii.tinkerer.common.enchantment.EnchantmentVampirism;
+//import vazkii.tinkerer.common.enchantment.core.EnchantmentManager;
+//import vazkii.tinkerer.common.lib.LibEnchantIDs;
+//import vazkii.tinkerer.common.lib.LibMisc;
+//import vazkii.tinkerer.common.lib.LibResearch;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import flaxbeard.thaumicexploration.ThaumicExploration;
 
@@ -19,39 +19,44 @@ public class TTIntegration {
 
 	public static void registerEnchants() {
 		
-			EnchantmentManager.registerExponentialCostData(ThaumicExploration.enchantmentBinding, "thaumicexploration:textures/tabs/binding.png", false, new AspectList().add(Aspect.ENTROPY, 15).add(Aspect.ORDER, 15), "ENCHBINDING");
-			EnchantmentManager.registerExponentialCostData(ThaumicExploration.enchantmentNightVision, "thaumicexploration:textures/tabs/nightvision.png", false, new AspectList().add(Aspect.ENTROPY, 20).add(Aspect.FIRE, 10).add(Aspect.ORDER, 20), "ENCHNIGHTVISION");
-			EnchantmentManager.registerExponentialCostData(ThaumicExploration.enchantmentDisarm, "thaumicexploration:textures/tabs/disarm.png", false, new AspectList().add(Aspect.AIR, 12).add(Aspect.ORDER, 7).add(Aspect.ENTROPY, 7), "ENCHDISARM");
+			//EnchantmentManager.registerExponentialCostData(ThaumicExploration.enchantmentBinding, "thaumicexploration:textures/tabs/binding.png", false, new AspectList().add(Aspect.ENTROPY, 15).add(Aspect.ORDER, 15), "ENCHBINDING");
+			//EnchantmentManager.registerExponentialCostData(ThaumicExploration.enchantmentNightVision, "thaumicexploration:textures/tabs/nightvision.png", false, new AspectList().add(Aspect.ENTROPY, 20).add(Aspect.FIRE, 10).add(Aspect.ORDER, 20), "ENCHNIGHTVISION");
+			//EnchantmentManager.registerExponentialCostData(ThaumicExploration.enchantmentDisarm, "thaumicexploration:textures/tabs/disarm.png", false, new AspectList().add(Aspect.AIR, 12).add(Aspect.ORDER, 7).add(Aspect.ENTROPY, 7), "ENCHDISARM");
 		
 	}
 	public static boolean canApplyTogether(Enchantment par1Enchantment, Enchantment par2Enchantment) {
-		if (par2Enchantment == ThaumicExploration.enchantmentBinding)
-			return !(par1Enchantment instanceof EnchantmentVampirism);
+		//if (par2Enchantment == ThaumicExploration.enchantmentBinding)
+		//	return !(par1Enchantment instanceof EnchantmentVampirism);
 		return true;
 	}
 	
 	public static boolean okVersion() {
-		String ver = LibMisc.VERSION.substring(LibMisc.VERSION.lastIndexOf("-") + 1);
-		int version = Integer.parseInt(ver);
-		System.out.println("!THAUMIC TINKERER VERSION: " + version + "!");
-		return (version > 71);
+		//String ver = LibMisc.VERSION.substring(LibMisc.VERSION.lastIndexOf("-") + 1);
+		//int version = Integer.parseInt(ver);
+		//System.out.println("!THAUMIC TINKERER VERSION: " + version + "!");
+		//return (version > 71);
+        return false;
 	}
 	
 	public static String keyRepairer() {
-		return LibResearch.KEY_REPAIRER;
+		//return LibResearch.KEY_REPAIRER;
+        return "";
 	}
 	
 	public static int getAscentLevel(EntityPlayer player) {
-		int boost = EnchantmentHelper.getMaxEnchantmentLevel(LibEnchantIDs.idAscentBoost, player.inventory.armorInventory);
-		return boost;
+		//int boost = EnchantmentHelper.getMaxEnchantmentLevel(LibEnchantIDs.idAscentBoost, player.inventory.armorInventory);
+		//return boost;
+        return 0;
 	}
 	
 	public static String enchantCategory() {
-		return LibResearch.CATEGORY_ENCHANTING;
+		//return LibResearch.CATEGORY_ENCHANTING;
+        return "";
 	}
 	
 	public static String keyEnchanter() {
-		return LibResearch.KEY_ENCHANTER;
+		//return LibResearch.KEY_ENCHANTER;
+        return "";
 	}
 	
 }

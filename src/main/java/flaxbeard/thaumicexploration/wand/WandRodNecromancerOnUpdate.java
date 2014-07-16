@@ -12,7 +12,6 @@ import thaumcraft.api.wands.IWandRodOnUpdate;
 import thaumcraft.common.entities.EntityAspectOrb;
 import thaumcraft.common.items.wands.ItemWandCasting;
 import thaumcraft.common.lib.InventoryHelper;
-import thaumcraft.common.lib.world.DamageSourceThaumcraft;
 import flaxbeard.thaumicexploration.ThaumicExploration;
 
 public class WandRodNecromancerOnUpdate implements IWandRodOnUpdate {
