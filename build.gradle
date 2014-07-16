@@ -48,9 +48,9 @@ group = "flaxbeard.thaumicexploration" // http://maven.apache.org/guides/mini/gu
 archivesBaseName = "ThaumicExploration"
 
 minecraft {
-    version = "1.7.2-10.12.2.1147"
+    version = "1.7.10-10.13.0.1183"
     //minecraftVersion="1.7.2"
-    assetDir = "eclipse/assets"
+    runDir = "eclipse/"
     replace '${version}', project.version
     //coreMod("tconstruct.preloader.TConstructLoaderContainer")
     if (project.hasProperty("pass"))
