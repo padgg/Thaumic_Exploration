@@ -48,7 +48,7 @@ group = "flaxbeard.thaumicexploration" // http://maven.apache.org/guides/mini/gu
 archivesBaseName = "ThaumicExploration"
 
 minecraft {
-    version = "1.7.10-10.13.0.1183"
+    version = "1.7.10-10.13.0.1186"
     //minecraftVersion="1.7.2"
     runDir = "eclipse/"
     replace '${version}', project.version
@@ -59,9 +59,22 @@ minecraft {
 
 }
 
-dependencies {
-}
 
+dependencies {
+    // you may put jars on which you depend on in ./libs
+    // or you may define them like so..
+    //compile "some.group:artifact:version:classifier"
+    //compile "some.group:artifact:version"
+
+    // real examples
+    compile 'com.mod-buildcraft:buildcraft:6.0.17:dev'  // adds buildcraft to the dev env
+    //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
+
+    // for more info...
+    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
+    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+
+}
 processResources
         {
             // replace stuff in mcmod.info, nothing else

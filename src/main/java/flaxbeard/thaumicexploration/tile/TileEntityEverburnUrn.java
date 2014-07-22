@@ -21,7 +21,7 @@ public class TileEntityEverburnUrn extends TileVisRelay implements IFluidTank,IF
 
     private int ticks = 0;
     private int drainTicks = 0;
-    private int ignisVis;
+    private float ignisVis;
     private int dX;
     private int dY;
     private int dZ;
@@ -31,23 +31,25 @@ public class TileEntityEverburnUrn extends TileVisRelay implements IFluidTank,IF
     private int range = 3;
     private int yRange = 2;
     private EntityPlayer burningPlayer;
+    private static int CONVERSION_FACTOR=250;
+
 
     @Override
     public FluidStack getFluid() {
         // TODO Auto-generated method stub
-        return new FluidStack(FluidRegistry.LAVA, 100);
+        return new FluidStack(FluidRegistry.LAVA, (int)Math.floor(ignisVis*CONVERSION_FACTOR));
     }
 
     @Override
     public int getFluidAmount() {
         // TODO Auto-generated method stub
-        return 9999;
+        return (int)Math.floor(ignisVis*CONVERSION_FACTOR);
     }
 
     @Override
     public int getCapacity() {
         // TODO Auto-generated method stub
-        return 9999;
+        return 4*CONVERSION_FACTOR;
     }
 
     @Override
@@ -65,12 +67,14 @@ public class TileEntityEverburnUrn extends TileVisRelay implements IFluidTank,IF
     @Override
     public FluidStack drain(int maxDrain, boolean doDrain) {
         // TODO Auto-generated method stub
-        int drained = maxDrain;
-        if (999999 < drained) {
-            drained = 999999;
+        float drained = maxDrain;
+        if (getFluidAmount() < drained) {
+            drained = getFluidAmount();
         }
 
-        FluidStack stack = new FluidStack(FluidRegistry.WATER, drained);
+        FluidStack stack = new FluidStack(FluidRegistry.LAVA, (int)drained);
+        System.out.println(drained/CONVERSION_FACTOR);
+        ignisVis-=drained/CONVERSION_FACTOR;
         return stack;
     }
 
@@ -84,7 +88,7 @@ public class TileEntityEverburnUrn extends TileVisRelay implements IFluidTank,IF
     public FluidStack drain(ForgeDirection from, FluidStack resource,
                             boolean doDrain) {
         // TODO Auto-generated method stub
-        if (!resource.isFluidEqual(new FluidStack(FluidRegistry.WATER, 1)) || !(from == ForgeDirection.UP)) {
+        if (!resource.isFluidEqual(new FluidStack(FluidRegistry.LAVA, 1)) || !(from == ForgeDirection.UP)) {
             return null;
         }
 
@@ -126,8 +130,8 @@ public class TileEntityEverburnUrn extends TileVisRelay implements IFluidTank,IF
         super.updateEntity();
         this.ticks++;
         if(this.ticks==10) {
-            if (this.ignisVis < 100) {
-                ignisVis += this.consumeVis(Aspect.FIRE, 10);
+            if (this.ignisVis < 16) {
+                ignisVis += this.consumeVis(Aspect.FIRE, 1);
             ticks=0;
             }
         }
