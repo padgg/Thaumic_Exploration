@@ -12,8 +12,9 @@ import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 import thaumcraft.client.lib.UtilsFX;
-import thaumcraft.client.renderers.tile.ModelBrain;
-import thaumcraft.client.renderers.tile.ModelJar;
+
+import thaumcraft.client.renderers.models.ModelBrain;
+import thaumcraft.client.renderers.models.ModelJar;
 import thaumcraft.client.renderers.tile.TileNodeRenderer;
 import thaumcraft.common.blocks.BlockJar;
 import thaumcraft.common.config.Config;
