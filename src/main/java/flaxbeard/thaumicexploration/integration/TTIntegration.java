@@ -7,13 +7,14 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import vazkii.tinkerer.common.enchantment.EnchantmentVampirism;
-import vazkii.tinkerer.common.enchantment.core.EnchantmentManager;
-import vazkii.tinkerer.common.lib.LibEnchantIDs;
-import vazkii.tinkerer.common.lib.LibMisc;
-import vazkii.tinkerer.common.lib.LibResearch;
+
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import flaxbeard.thaumicexploration.ThaumicExploration;
+import thaumic.tinkerer.common.enchantment.EnchantmentVampirism;
+import thaumic.tinkerer.common.enchantment.core.EnchantmentManager;
+import thaumic.tinkerer.common.lib.LibEnchantIDs;
+import thaumic.tinkerer.common.lib.LibMisc;
+import thaumic.tinkerer.common.lib.LibResearch;
 
 public class TTIntegration {
 
@@ -46,9 +47,7 @@ public class TTIntegration {
 		return boost;
 	}
 	
-	public static String enchantCategory() {
-		return LibResearch.CATEGORY_ENCHANTING;
-	}
+
 	
 	public static String keyEnchanter() {
 		return LibResearch.KEY_ENCHANTER;

@@ -18,8 +18,6 @@ import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileCrucible;
 
-import com.sun.xml.internal.bind.v2.TODO;
-
 import cpw.mods.fml.common.Loader;
 import flaxbeard.thaumicexploration.ThaumicExploration;
 import flaxbeard.thaumicexploration.integration.BotaniaIntegration;
