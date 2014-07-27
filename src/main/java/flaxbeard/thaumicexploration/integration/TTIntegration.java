@@ -7,11 +7,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-//import vazkii.tinkerer.common.enchantment.EnchantmentVampirism;
-//import vazkii.tinkerer.common.enchantment.core.EnchantmentManager;
-//import vazkii.tinkerer.common.lib.LibEnchantIDs;
-//import vazkii.tinkerer.common.lib.LibMisc;
-//import vazkii.tinkerer.common.lib.LibResearch;
+
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import flaxbeard.thaumicexploration.ThaumicExploration;
 import thaumic.tinkerer.common.enchantment.EnchantmentVampirism;
@@ -53,6 +49,7 @@ public class TTIntegration {
 		return boost;
         //return 0;
 	}
+	
 
 	
 	public static String keyEnchanter() {
