@@ -1,0 +1,188 @@
+<<<<<<< HEAD
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+        maven {
+            url 'https://oss.sonatype.org/content/groups/public'
+        }
+        mavenLocal()
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+    }
+}
+repositories {
+    ivy {
+
+        name 'Forge FS legacy'
+        artifactPattern "http://files.minecraftforge.net/[module]/[module]-dev-[revision].[ext]"
+    }
+
+    maven {
+        name 'ForgeFS'
+        url 'http://files.minecraftforge.net/maven'
+    }
+    maven {
+        name 'MinecraftS3'
+        url 'http://s3.amazonaws.com/Minecraft.Download/libraries'
+    }
+}
+apply plugin: 'forge'
+
+
+version = "1.0-DEVBUILD"
+if (project.hasProperty("buildnum"))
+    version = "1.0-" + project.buildnum
+if (project.hasProperty("releaseType"))
+    if (project.releaseType == "ALPHA")
+        version = "alpha-" + version
+
+group = "flaxbeard.thaumicexploration" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "ThaumicExploration"
+
+minecraft {
+    version = "1.7.10-10.13.0.1186"
+    //minecraftVersion="1.7.2"
+    runDir = "eclipse/"
+    replace '${version}', project.version
+    //coreMod("tconstruct.preloader.TConstructLoaderContainer")
+    if (project.hasProperty("pass"))
+        replace "INSERTPASSWORDHERE", project.pass
+
+
+}
+
+
+dependencies {
+    // you may put jars on which you depend on in ./libs
+    // or you may define them like so..
+    //compile "some.group:artifact:version:classifier"
+    //compile "some.group:artifact:version"
+
+    // real examples
+    compile 'com.mod-buildcraft:buildcraft:6.0.17:dev'  // adds buildcraft to the dev env
+    //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
+
+    // for more info...
+    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
+    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+
+}
+processResources
+        {
+            // replace stuff in mcmod.info, nothing else
+            from(sourceSets.main.resources.srcDirs) {
+                include 'mcmod.info'
+                // replace version and mcversion
+                expand 'version': project.version, 'MCversion': project.minecraft.version
+            }
+
+            // copy everything else, thats not the mcmod.info
+            from(sourceSets.main.resources.srcDirs) {
+                exclude 'mcmod.info'
+            }
+        }
+//jar {
+//    manifest {
+//        attributes 'FMLCorePlugin': 'vazkii.tinkerer.preloader.ThaumicTLoaderContainer'
+//        attributes 'FMLCorePluginContainsFMLMod': 'true'
+//    }
+//}
+=======
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+        maven {
+            url 'https://oss.sonatype.org/content/groups/public'
+        }
+        mavenLocal()
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+    }
+}
+repositories {
+    ivy {
+
+        name 'Forge FS legacy'
+        artifactPattern "http://files.minecraftforge.net/[module]/[module]-dev-[revision].[ext]"
+    }
+
+    maven {
+        name 'ForgeFS'
+        url 'http://files.minecraftforge.net/maven'
+    }
+    maven {
+        name 'MinecraftS3'
+        url 'http://s3.amazonaws.com/Minecraft.Download/libraries'
+    }
+}
+apply plugin: 'forge'
+
+
+version = "1.0-DEVBUILD"
+if (project.hasProperty("buildnum"))
+    version = "1.0-" + project.buildnum
+if (project.hasProperty("releaseType"))
+    if (project.releaseType == "ALPHA")
+        version = "alpha-" + version
+
+group = "flaxbeard.thaumicexploration" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "ThaumicExploration"
+
+minecraft {
+    version = "1.7.2-10.12.2.1147"
+    //minecraftVersion="1.7.2"
+    assetDir = "eclipse/assets"
+    replace '${version}', project.version
+    //coreMod("tconstruct.preloader.TConstructLoaderContainer")
+    if (project.hasProperty("pass"))
+        replace "INSERTPASSWORDHERE", project.pass
+
+
+}
+
+dependencies {
+}
+
+processResources
+        {
+            // replace stuff in mcmod.info, nothing else
+            from(sourceSets.main.resources.srcDirs) {
+                include 'mcmod.info'
+                // replace version and mcversion
+                expand 'version': project.version, 'MCversion': project.minecraft.version
+            }
+
+            // copy everything else, thats not the mcmod.info
+            from(sourceSets.main.resources.srcDirs) {
+                exclude 'mcmod.info'
+            }
+        }
+//jar {
+//    manifest {
+//        attributes 'FMLCorePlugin': 'vazkii.tinkerer.preloader.ThaumicTLoaderContainer'
+//        attributes 'FMLCorePluginContainsFMLMod': 'true'
+//    }
+//}
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'dev'
+}
+>>>>>>> 1.7.2
