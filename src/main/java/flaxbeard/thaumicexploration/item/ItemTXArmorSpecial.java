@@ -96,7 +96,7 @@ public class ItemTXArmorSpecial extends ItemArmor implements IRepairable{
                 if (player.isInWater()) {
                   bonus /= 4.0F;
                 }
-                if (player.onGround)
+                if (player.onGround || player.isOnLadder())
                 {
                   player.moveFlying(0.0F, 1.0F, bonus);
                 }

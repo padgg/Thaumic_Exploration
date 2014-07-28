@@ -3,6 +3,8 @@ package flaxbeard.thaumicexploration.event;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import cpw.mods.fml.common.Loader;
+import flaxbeard.thaumicexploration.integration.TTIntegration;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerCapabilities;
@@ -275,9 +277,9 @@ public class TXBootsEventHandler
 	      double total = Math.abs(vector.zCoord + vector.xCoord);
 	      EntityPlayer player = (EntityPlayer)event.entity;
 	      double jump = 0;
-//		  if (Loader.isModLoaded("ThaumicTinkerer")) {
-//	    	  jump = TTIntegration.getAscentLevel((EntityPlayer)event.entity);
-//	      }
+		  if (Loader.isModLoaded("ThaumicTinkerer")) {
+	    	  jump = TTIntegration.getAscentLevel((EntityPlayer) event.entity);
+	      }
 		  if(jump >= 1) {
 			  jump = (jump + 2D)/4D;
 		  }
@@ -319,7 +321,7 @@ public class TXBootsEventHandler
       int ticks = item.stackTagCompound.getInteger("smashTicks");
       int ticksAir = item.stackTagCompound.getInteger("airTicks");
 
-      if (player.onGround) {
+      if (player.onGround || player.isOnLadder()) {
     	  int size = 0;
     	  if (ticks > 5)
     		  size = 1;
