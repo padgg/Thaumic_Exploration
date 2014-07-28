@@ -74,7 +74,9 @@ public class TileEntityEverburnUrn extends TileVisRelay implements IFluidTank,IF
 
         FluidStack stack = new FluidStack(FluidRegistry.LAVA, (int)drained);
         System.out.println(drained/CONVERSION_FACTOR);
+        System.out.println("Drained Before: "+ignisVis);
         ignisVis-=drained/CONVERSION_FACTOR;
+        System.out.println("Drained after: "+ignisVis);
         return stack;
     }
 
@@ -132,8 +134,9 @@ public class TileEntityEverburnUrn extends TileVisRelay implements IFluidTank,IF
         if(this.ticks==10) {
             if (this.ignisVis < 16) {
                 ignisVis += this.consumeVis(Aspect.FIRE, 1);
-            ticks=0;
+
             }
+            ticks=0;
         }
     }
 }
