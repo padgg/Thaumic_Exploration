@@ -385,7 +385,7 @@ public class TXBootsEventHandler
        
 
 		double motion = Math.abs(player.motionX) + Math.abs(player.motionZ) + Math.abs(player.motionY);
-		if (motion > 0.1F || !player.onGround) {
+		if (motion > 0.1F || !player.onGround || player.isOnLadder()) {
 			if (ticks < 100)
 				ticks++;
 		}
