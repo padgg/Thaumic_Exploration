@@ -186,6 +186,8 @@ public class ThaumicExploration {
 	public static int everfullUrnID;
     public static Block everburnUrn;
     public static int everburnUrnID;
+    public static Block soulBrazier;
+    public static int soulBrazierID;
 	public static Block autoSorter;
 	public static int autoSorterID;
 	
@@ -222,6 +224,7 @@ public class ThaumicExploration {
 	public static StaffRod STAFF_ROD_NECRO;
 	
 	public static int everfullUrnRenderID;
+    public static int soulBrazierRenderID;
 	public static int crucibleSoulsRenderID;
 	public static int replicatorRenderID;
 	public static int candleSkullRenderID;
@@ -339,6 +342,7 @@ public class ThaumicExploration {
 		thinkTankJar = new BlockThinkTank(thinkTankJarID, false).setBlockName("thaumicexploration:thinkTankJar").setCreativeTab(tab).setBlockTextureName("thaumicExploration:blankTexture");
 		everfullUrn = new BlockEverfullUrn(everfullUrnID).setHardness(2.0F).setBlockName("thaumicexploration:everfullUrn").setCreativeTab(tab).setBlockTextureName("thaumicExploration:everfullUrn");
         everburnUrn = new BlockEverburnUrn(everburnUrnID).setHardness(2.0F).setBlockName("thaumicexploration:everburnUrn").setCreativeTab(tab).setBlockTextureName("thaumicExploration:everfullUrn");
+        soulBrazier= new BlockSoulBrazier().setHardness(2.0F).setBlockName("thaumicexploration:soulBrazier").setCreativeTab(tab).setBlockTextureName("thaumicExploration:soulBrazier");
 		crucibleSouls = new BlockCrucibleSouls(crucibleSoulsID).setHardness(2.0F).setBlockName("thaumicexploration:crucibleSouls").setCreativeTab(tab).setBlockTextureName("thaumicExploration:crucible3");
 		replicator = new BlockReplicator(replicatorID).setHardness(4.0F).setBlockName("thaumicexploration:replicator").setCreativeTab(tab).setBlockTextureName("thaumicexploration:replicatorBottom");
 		meltyIce = new BlockBootsIce(meltyIceID).setBlockName("thaumicexploration:meltyIce").setHardness(0.5F).setLightOpacity(3).setStepSound(Block.soundTypeGlass).setBlockName("ice").setBlockTextureName("ice");
@@ -360,6 +364,7 @@ public class ThaumicExploration {
 		GameRegistry.registerBlock(thinkTankJar, "thinkTankJar");
 		GameRegistry.registerBlock(everfullUrn, "everfullUrn");
         GameRegistry.registerBlock(everburnUrn, "everburnUrn");
+        GameRegistry.registerBlock(soulBrazier,"soulBrazier");
 		GameRegistry.registerBlock(crucibleSouls, "crucibleSouls");
 		GameRegistry.registerBlock(replicator, "replicator");
 
@@ -450,6 +455,7 @@ public class ThaumicExploration {
 		necroPedestalRenderID = RenderingRegistry.getNextAvailableRenderId();
 		floatCandleRenderID = RenderingRegistry.getNextAvailableRenderId();
 		trashJarRenderID = RenderingRegistry.getNextAvailableRenderId();
+        soulBrazierRenderID=RenderingRegistry.getNextAvailableRenderId();
 		//Creative Tab
 		
 		
@@ -464,6 +470,7 @@ public class ThaumicExploration {
 		GameRegistry.registerTileEntity(TileEntityThinkTank.class, "tileEntityThinkTank");
 		GameRegistry.registerTileEntity(TileEntityEverfullUrn.class, "tileEntityEverfullUrn");
         GameRegistry.registerTileEntity(TileEntityEverburnUrn.class, "tileEntityEverburnUrn");
+        GameRegistry.registerTileEntity(TileEntitySoulBrazier.class, "tileEntitySoulBrazier");
 		GameRegistry.registerTileEntity(TileEntityCrucibleSouls.class, "tileEntityCrucibleSouls");
 		GameRegistry.registerTileEntity(TileEntityReplicator.class, "tileEntityReplicator");
 		GameRegistry.registerTileEntity(TileEntityTrashJar.class, "tileEntityTrashJar");

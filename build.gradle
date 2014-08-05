@@ -37,9 +37,9 @@ repositories {
 apply plugin: 'forge'
 
 
-version = "1.0-DEVBUILD"
+version = "1.7.10-1.1"
 if (project.hasProperty("buildnum"))
-    version = "1.0-" + project.buildnum
+    version = "1.7.10-1.1" + project.buildnum
 if (project.hasProperty("releaseType"))
     if (project.releaseType == "ALPHA")
         version = "alpha-" + version
