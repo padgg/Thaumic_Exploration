@@ -54,7 +54,8 @@ public class TileEntitySoulBrazier extends TileVisRelay {
     {
         owner=player.getGameProfile();
         active=true;
-        
+        Thaumcraft.proxy.getPlayerKnowledge().addWarp(owner.getName(),-2);
+        storedWarp+=2;
     }
     @Override
     public void updateEntity() {
