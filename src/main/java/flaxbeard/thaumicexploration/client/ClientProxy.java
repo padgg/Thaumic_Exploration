@@ -18,6 +18,7 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import flaxbeard.thaumicexploration.ThaumicExploration;
 import flaxbeard.thaumicexploration.common.CommonProxy;
 import flaxbeard.thaumicexploration.packet.TXClientPacketHandler;
+import thaumcraft.client.fx.ParticleEngine;
 import thaumcraft.client.fx.bolt.FXLightningBolt;
 import thaumcraft.client.fx.particles.FXBoreParticles;
 import thaumcraft.client.fx.particles.FXBoreSparkle;
@@ -64,7 +65,7 @@ public class ClientProxy extends CommonProxy
     @Override
     public void spawnWaterOnPlayer(World worldObj, int xCoord, int yCoord, int zCoord, EntityPlayer player) {
     	FXEssentiaTrail fx = new FXEssentiaTrail(worldObj, xCoord+0.5F, yCoord+1.1F, zCoord+0.5F, player.posX, player.posY, player.posZ, 5, Aspect.TOOL.getColor(), 1.0F);
-    	Minecraft.getMinecraft().effectRenderer.addEffect(fx);
+        ParticleEngine.instance.addEffect(worldObj,fx);
     }
     
     @Override
@@ -79,19 +80,19 @@ public class ClientProxy extends CommonProxy
     @Override
     public void spawnRandomWaterFountain(World worldObj, int xCoord, int yCoord, int zCoord) {
 		FXEssentiaTrail fx = new FXEssentiaTrail(worldObj, xCoord+0.5F, yCoord+1.1F, zCoord+0.5F, xCoord+0.5F+((Math.random())-0.5), yCoord+2.1F, zCoord+0.5F+((Math.random())-0.5), 5, Aspect.TOOL.getColor(), 1.0F);
-		Minecraft.getMinecraft().effectRenderer.addEffect(fx);
+        ParticleEngine.instance.addEffect(worldObj,fx);
     }
     
     @Override
 	public void spawnWaterAtLocation(World worldObj,  double xCoord, double  yCoord, double zCoord, double dX, double dY, double dZ) {
 		FXEssentiaTrail fx = new FXEssentiaTrail(worldObj, xCoord, yCoord, zCoord, dX, dY, dZ, 5, Aspect.TOOL.getColor(), 1.0F);
-		Minecraft.getMinecraft().effectRenderer.addEffect(fx);
+        ParticleEngine.instance.addEffect(worldObj,fx);
     }
     
     @Override
 	public void spawnEssentiaAtLocation(World worldObj,  double xCoord, double  yCoord, double zCoord, double dX, double dY, double dZ, int size, int color) {
 		FXEssentiaTrail fx = new FXEssentiaTrail(worldObj, xCoord, yCoord, zCoord, dX, dY, dZ, size, color, 1.0F);
-		Minecraft.getMinecraft().effectRenderer.addEffect(fx);
+        ParticleEngine.instance.addEffect(worldObj,fx);
     }
     
     @Override
@@ -99,7 +100,7 @@ public class ClientProxy extends CommonProxy
 	    FXBoreSparkle fb = new FXBoreSparkle(worldObj, xCoord, yCoord, zCoord, x2, y2, z2);
 	    
 	    fb.setRBGColorF(0.4F + worldObj.rand.nextFloat() * 0.2F, 0.2F, 0.6F + worldObj.rand.nextFloat() * 0.3F);
-	    Minecraft.getMinecraft().effectRenderer.addEffect(fb);
+        ParticleEngine.instance.addEffect(worldObj,fb);
     }
     
     @Override
@@ -111,7 +112,7 @@ public class ClientProxy extends CommonProxy
 		fb.motionX = ((float)worldObj.rand.nextGaussian() * 0.03F);
 		fb.motionY = ((float)worldObj.rand.nextGaussian() * 0.03F);
 		fb.motionZ = ((float)worldObj.rand.nextGaussian() * 0.03F);
-	    FMLClientHandler.instance().getClient().effectRenderer.addEffect(fb);
+        ParticleEngine.instance.addEffect(worldObj,fb);
     }
     
     @Override
@@ -123,7 +124,7 @@ public class ClientProxy extends CommonProxy
 		fb.motionX = ((float)worldObj.rand.nextGaussian() * 0.03F);
 		fb.motionY = ((float)worldObj.rand.nextGaussian() * 0.03F);
 		fb.motionZ = ((float)worldObj.rand.nextGaussian() * 0.03F);
-	    FMLClientHandler.instance().getClient().effectRenderer.addEffect(fb);
+        ParticleEngine.instance.addEffect(worldObj,fb);
     }
     
    
