@@ -82,6 +82,27 @@ public class TileEntitySoulBrazier extends TileVisRelay  implements IEssentiaTra
         if(this.count % 10==0) {
             ThaumicExploration.proxy.spawnActiveBrazierParticle(worldObj,xCoord,yCoord,zCoord);
         }
+        if(this.count % 60==0) {
+        	int counter = 0;
+        	int tX = 0;
+        	int tY = 0;
+        	int tZ = 0;
+        	boolean found = false;
+        	while (counter < 25 && !found) {
+	        	tX = xCoord - 3 + worldObj.rand.nextInt(7);
+	        	tY = yCoord - 3 + worldObj.rand.nextInt(7);
+	        	tZ = zCoord - 3 + worldObj.rand.nextInt(7);
+	        	counter++;
+	        	if ((worldObj.isAirBlock(tX, tY+1, tZ) && !worldObj.isAirBlock(tX, tY, tZ))) {
+	        		found = true;
+	        		float offsetY = (float) (Math.sin(Math.toRadians(count*1.0F))/4.0F);
+	        		float offsetZ = (float) (Math.sin(Math.toRadians(count*3.0F))/4.0F);
+	        		float offsetX = (float) (Math.cos(Math.toRadians(count*3.0F))/4.0F);
+	        
+	        		ThaumicExploration.proxy.spawnLightningBolt(worldObj, tX, tY, tZ, xCoord+0.5F+offsetX, yCoord+1.5F+offsetY, zCoord+offsetZ+0.5F);
+	        	}
+        	}
+        }
         changeTaint();
         if(active) {
 

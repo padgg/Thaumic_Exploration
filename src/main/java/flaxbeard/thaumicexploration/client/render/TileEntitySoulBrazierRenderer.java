@@ -49,14 +49,16 @@ public class TileEntitySoulBrazierRenderer extends TileEntitySpecialRenderer {
         float alpha = MathHelper.sin(Minecraft.getMinecraft().renderViewEntity.ticksExisted / 8.0F) * 0.1F + 0.5F;
         UtilsFX.bindTexture("textures/misc/node_bubble.png");
         
-        int count = brazier.count % 20 == 0 || (brazier.count-1) % 20 == 0  ? 17 : 37; //PERHAPS THIS COULD BE THE LIGHTNING
+        int count = brazier.count % 60 == 0 || (brazier.count-1) % 60 == 0  ? 7 : 37; //PERHAPS THIS COULD BE THE LIGHTNING
       
         UtilsFX.renderFacingQuad(tile.xCoord + 0.5D, tile.yCoord + 1.5D, tile.zCoord + 0.5D, 0.0F, 
         		0.7F, //SIZE
-        		count / 37.0F * alpha, //ALPHA
+        		count / 37.0F * alpha * 4.0F, //ALPHA
         		1, 0, par8, 
         		11665663); //COLOR
-        
+        GL11.glDepthMask(true);
+        GL11.glDisable(3042);
+        GL11.glAlphaFunc(516, 0.1F);
         GL11.glPopMatrix();
 
    

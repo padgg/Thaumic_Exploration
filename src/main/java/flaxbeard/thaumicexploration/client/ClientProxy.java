@@ -1,28 +1,48 @@
 package flaxbeard.thaumicexploration.client;
 
-import flaxbeard.thaumicexploration.client.render.*;
-import flaxbeard.thaumicexploration.tile.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import thaumcraft.api.aspects.Aspect;
-
-import cpw.mods.fml.client.FMLClientHandler;
+import thaumcraft.client.fx.ParticleEngine;
+import thaumcraft.client.fx.bolt.FXLightningBolt;
+import thaumcraft.client.fx.particles.FXBoreParticles;
+import thaumcraft.client.fx.particles.FXBoreSparkle;
+import thaumcraft.client.fx.particles.FXEssentiaTrail;
+import thaumcraft.client.fx.particles.FXWisp;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import flaxbeard.thaumicexploration.ThaumicExploration;
+import flaxbeard.thaumicexploration.client.render.BlockCrucibleSoulsRenderer;
+import flaxbeard.thaumicexploration.client.render.BlockEverfullUrnRenderer;
+import flaxbeard.thaumicexploration.client.render.BlockFloatyCandleRenderer;
+import flaxbeard.thaumicexploration.client.render.BlockReplicatorRenderer;
+import flaxbeard.thaumicexploration.client.render.BlockSoulBrazierRenderer;
+import flaxbeard.thaumicexploration.client.render.BlockTrashJarRenderer;
+import flaxbeard.thaumicexploration.client.render.ItemRenderThinkTank;
+import flaxbeard.thaumicexploration.client.render.TileEntityBoundChestRender;
+import flaxbeard.thaumicexploration.client.render.TileEntityBoundJarRender;
+import flaxbeard.thaumicexploration.client.render.TileEntityFloatyCandleRender;
+import flaxbeard.thaumicexploration.client.render.TileEntityRenderCrucibleSouls;
+import flaxbeard.thaumicexploration.client.render.TileEntityReplicatorRender;
+import flaxbeard.thaumicexploration.client.render.TileEntitySoulBrazierRenderer;
+import flaxbeard.thaumicexploration.client.render.TileEntityThinkTankRender;
+import flaxbeard.thaumicexploration.client.render.TileEntityTrashJarRenderer;
 import flaxbeard.thaumicexploration.common.CommonProxy;
 import flaxbeard.thaumicexploration.packet.TXClientPacketHandler;
-import thaumcraft.client.fx.ParticleEngine;
-import thaumcraft.client.fx.bolt.FXLightningBolt;
-import thaumcraft.client.fx.particles.*;
-import thaumcraft.common.Thaumcraft;
+import flaxbeard.thaumicexploration.tile.TileEntityBoundChest;
+import flaxbeard.thaumicexploration.tile.TileEntityBoundJar;
+import flaxbeard.thaumicexploration.tile.TileEntityCrucibleSouls;
+import flaxbeard.thaumicexploration.tile.TileEntityFloatyCandle;
+import flaxbeard.thaumicexploration.tile.TileEntityReplicator;
+import flaxbeard.thaumicexploration.tile.TileEntitySoulBrazier;
+import flaxbeard.thaumicexploration.tile.TileEntityThinkTank;
+import flaxbeard.thaumicexploration.tile.TileEntityTrashJar;
 
 public class ClientProxy extends CommonProxy
 {
@@ -98,9 +118,18 @@ public class ClientProxy extends CommonProxy
     @Override
     public void spawnActiveBrazierParticle(World worldObj, int xCoord, int yCoord, int zCoord) {
         //FXEssentiaTrail fx = new FXEssentiaTrail(worldObj, xCoord+0.5F, yCoord+1.1F, zCoord+0.5F, xCoord+0.5F, yCoord+1.5F, zCoord+0.5F, 5, Aspect.DARKNESS.getColor(), 1.0F);
+    	float offsetY = 0;
+    	float offsetZ = 0;
+    	float offsetX = 0;
 
+    	if (worldObj.getTileEntity(xCoord, yCoord, zCoord) != null && worldObj.getTileEntity(xCoord, yCoord, zCoord) instanceof TileEntitySoulBrazier) {
+    		TileEntitySoulBrazier brazier = (TileEntitySoulBrazier) worldObj.getTileEntity(xCoord, yCoord, zCoord);
+    		offsetY = (float) (Math.sin(Math.toRadians(brazier.count*1.0F))/4.0F);
+    		offsetZ = (float) (Math.sin(Math.toRadians(brazier.count*3.0F))/4.0F);
+    		offsetX = (float) (Math.cos(Math.toRadians(brazier.count*3.0F))/4.0F);
+    	}
         //ParticleEngine.instance.addEffect(worldObj, fs);
-        FXWisp ef = new FXWisp(worldObj, xCoord+0.55F, yCoord+1.5F, zCoord+0.55F, (float) Math.random() / 1.125F, (float)(178.0F/255.0F),(float)0.0f,(float)(255.0F/255.0F));
+        FXWisp ef = new FXWisp(worldObj, xCoord+0.55F+offsetX, yCoord+1.5F+offsetY, zCoord+0.55F+offsetZ, (float) Math.random() / 1.125F, (float)(178.0F/255.0F),(float)0.0f,(float)(255.0F/255.0F));
 
         ef.setGravity(0);
         ef.shrink = false;
@@ -108,7 +137,7 @@ public class ClientProxy extends CommonProxy
         ef.blendmode=770;
 
         ParticleEngine.instance.addEffect(worldObj, ef);
-    	ef = new FXWisp(worldObj, xCoord+0.55F, yCoord+1.5F, zCoord+0.55F, (float) Math.random() / 1.5F, (float)0.1f,(float)0.1f,(float)0.1f);
+    	ef = new FXWisp(worldObj, xCoord+0.55F+offsetX, yCoord+1.5F+offsetY, zCoord+0.55F+offsetZ, (float) Math.random() / 1.5F, (float)0.1f,(float)0.1f,(float)0.1f);
         ef.setGravity(0);
         ef.shrink = false;
         ef.noClip = true;
@@ -116,6 +145,7 @@ public class ClientProxy extends CommonProxy
 
         ParticleEngine.instance.addEffect(worldObj, ef);
     }
+    
 
     @Override
 	public void spawnBoreSparkle(World worldObj, double xCoord, double yCoord, double zCoord, double x2, double y2, double z2) {
