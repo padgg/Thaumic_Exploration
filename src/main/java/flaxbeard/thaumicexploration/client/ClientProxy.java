@@ -108,7 +108,7 @@ public class ClientProxy extends CommonProxy
         ef.blendmode=770;
 
         ParticleEngine.instance.addEffect(worldObj, ef);
-        ef = new FXWisp(worldObj, xCoord+0.5F, yCoord+1.5F, zCoord+0.5F, (float) Math.random() / 2F, (float)0.0f,(float)0.0f,(float)0.0f);
+        ef = new FXWisp(worldObj, xCoord+0.5F, yCoord+1.5F, zCoord+0.5F, (float) Math.random() / 2F, (float)0.15f,(float)0.15f,(float)0.15f);
         ef.setGravity(0);
         ef.shrink = false;
         ef.noClip = true;
