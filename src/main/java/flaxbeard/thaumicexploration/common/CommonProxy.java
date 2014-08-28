@@ -37,6 +37,8 @@ public class CommonProxy
 	}
 	public void spawnHarvestParticle(World worldObj, double xCoord,double yCoord, double zCoord, double x2, double y2, double z2) {
 	}
+    public void spawnActiveBrazierParticle(World worldObj, int xCoord, int yCoord, int zCoord) {
+    }
 	public void spawnFragmentParticle(World worldObj, double xCoord,
 			double yCoord, double zCoord, double x2, double y2, double z2,
 			Block block, int id) {

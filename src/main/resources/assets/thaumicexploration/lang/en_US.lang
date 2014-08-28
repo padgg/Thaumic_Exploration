@@ -54,6 +54,8 @@ death.attack.noTaint=%1$s suffered from Taint withdrawl
 potion.binding=Binding
 potion.taintWithdrawl=Taint Withdrawl
 
+----Misc---
+soulbrazier.invalidplayer=The brazier grumbles and spits as it refuses to work for an unknown soul
 ----Enchantment Names----
 enchantment.binding=Binding
 enchantment.nightVision=Night Vision

@@ -1,12 +1,20 @@
 package flaxbeard.thaumicexploration.tile;
 
 import com.mojang.authlib.GameProfile;
+import flaxbeard.thaumicexploration.ThaumicExploration;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.ThaumcraftApi;
+import thaumcraft.api.ThaumcraftApiHelper;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.IAspectContainer;
+import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.BlockTaintFibres;
 import thaumcraft.common.config.Config;
@@ -17,7 +25,7 @@ import thaumcraft.common.tiles.TileVisRelay;
 /**
  * Created by nekosune on 03/08/14.
  */
-public class TileEntitySoulBrazier extends TileVisRelay {
+public class TileEntitySoulBrazier extends TileVisRelay  implements IEssentiaTransport {
 
 
     public int storedWarp;
@@ -26,6 +34,11 @@ public class TileEntitySoulBrazier extends TileVisRelay {
     public boolean active;
     public GameProfile owner;
     public int count;
+    private int ticks=0;
+    private static int EssentiaCapacity=16;
+    private static int VisCapacity=16;
+    private static int EssentiaRate=5;
+    private static int VisRate=5;
     @Override
     public void readCustomNBT(NBTTagCompound nbttagcompound) {
         super.readCustomNBT(nbttagcompound);
@@ -50,24 +63,56 @@ public class TileEntitySoulBrazier extends TileVisRelay {
 
 
 
-    public void setActive(EntityPlayer player)
+    public boolean setActive(EntityPlayer player)
     {
-        owner=player.getGameProfile();
+        if(!player.getGameProfile().getId().equals(owner.getId())) {
+            if(worldObj.isRemote)
+                player.addChatComponentMessage(new ChatComponentTranslation("soulbrazier.invalidplayer"));
+            return false;
+        }
         active=true;
-        //Thaumcraft.proxy.getPlayerKnowledge().addWarp(owner.getName(),-2);
+        Thaumcraft.proxy.getPlayerKnowledge().addWarp(owner.getName(),-2);
         storedWarp+=2;
+        return true;
     }
     @Override
     public void updateEntity() {
         super.updateEntity();
         this.count += 1;
-        //Thaumcraft.proxy.getPlayerKnowledge().getWarp("nekosune");
+        if(this.count % 10==0) {
+            ThaumicExploration.proxy.spawnActiveBrazierParticle(worldObj,xCoord,yCoord,zCoord);
+        }
         changeTaint();
+        if(active) {
 
+            getPower();
+            spendPower();
+            if (!checkPower()) {
+                active = false;
+                Thaumcraft.proxy.getPlayerKnowledge().addWarp(owner.getName(), storedWarp);
+                storedWarp=0;
+            }
+
+        }
     }
 
+    private boolean checkPower() {
+        return currentEssentia <=0 || currentVis<=0;
+    }
 
+    private void spendPower() {
+        currentEssentia=Math.min(0,currentEssentia-EssentiaRate);
+        currentVis=Math.min(0,currentVis-VisRate);
+    }
 
+    private void getPower() {
+        if(this.count % 10==0) {
+            if (this.currentVis < VisCapacity) {
+                currentVis += this.consumeVis(Aspect.FIRE, 1);
+
+            }
+        }
+    }
     public void changeTaint()
     {
         if(active && (this.count % 50 == 0)) {
@@ -88,5 +133,78 @@ public class TileEntitySoulBrazier extends TileVisRelay {
             }
             this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
         }
+    }
+
+
+
+    @Override
+    public boolean isConnectable(ForgeDirection forgeDirection) {
+        return forgeDirection==ForgeDirection.DOWN;
+    }
+
+    @Override
+    public boolean canInputFrom(ForgeDirection forgeDirection) {
+        return forgeDirection==ForgeDirection.DOWN;
+    }
+
+    @Override
+    public boolean canOutputTo(ForgeDirection forgeDirection) {
+        return false;
+    }
+
+    @Override
+    public void setSuction(Aspect aspect, int i) {
+
+    }
+
+    @Override
+    public Aspect getSuctionType(ForgeDirection forgeDirection) {
+        return (forgeDirection==ForgeDirection.DOWN)?Aspect.DEATH:null;
+    }
+
+    @Override
+    public int getSuctionAmount(ForgeDirection forgeDirection) {
+        return (forgeDirection==ForgeDirection.DOWN)?128:0;
+    }
+
+    @Override
+    public int takeEssentia(Aspect aspect, int i, ForgeDirection forgeDirection) {
+        return 0;
+    }
+
+    @Override
+    public int addEssentia(Aspect aspect, int i, ForgeDirection forgeDirection) {
+        int newEssentia=0;
+        int filled = EssentiaCapacity - currentEssentia;
+        if (i < filled)
+        {
+            currentEssentia += i;
+            filled = i;
+        }
+        else
+        {
+            currentEssentia = EssentiaCapacity;
+        }
+        return filled;
+    }
+
+    @Override
+    public Aspect getEssentiaType(ForgeDirection forgeDirection) {
+        return (forgeDirection==ForgeDirection.DOWN)?Aspect.DEATH:null;
+    }
+
+    @Override
+    public int getEssentiaAmount(ForgeDirection forgeDirection) {
+        return 0;
+    }
+
+    @Override
+    public int getMinimumSuction() {
+        return 0;
+    }
+
+    @Override
+    public boolean renderExtendedTube() {
+        return false;
     }
 }
