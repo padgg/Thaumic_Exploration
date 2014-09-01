@@ -73,27 +73,27 @@ public final class ModRecipes {
 	private static void initInfusionRecipes() {
 		registerResearchItemI("BRAINCURE", new ItemStack(ThaumicExploration.pureZombieBrain), 3, 
 				new AspectList().add(Aspect.MAN, 4).add(Aspect.MIND, 6).add(Aspect.HEAL, 2), 
-				new ItemStack(ConfigItems.itemResource, 1,5), 
+				new ItemStack(ConfigItems.itemZombieBrain, 1), 
 				new ItemStack(Items.potionitem,1, 8232), new ItemStack(Items.golden_apple), 
 				new ItemStack(Items.water_bucket));
 		registerResearchItemI("BRAINCURE","BRAINCUREALT1", new ItemStack(ThaumicExploration.pureZombieBrain), 3, 
 				new AspectList().add(Aspect.MAN, 4).add(Aspect.MIND, 6).add(Aspect.HEAL, 2), 
-				new ItemStack(ConfigItems.itemResource, 1,5), 
+				new ItemStack(ConfigItems.itemZombieBrain, 1), 
 				new ItemStack(Items.potionitem,1, 8264), new ItemStack(Items.golden_apple), 
 				new ItemStack(Items.water_bucket));
 		registerResearchItemI("BRAINCURE","BRAINCUREALT3", new ItemStack(ThaumicExploration.pureZombieBrain), 3, 
 				new AspectList().add(Aspect.MAN, 4).add(Aspect.MIND, 6).add(Aspect.HEAL, 2), 
-				new ItemStack(ConfigItems.itemResource, 1,5), 
+				new ItemStack(ConfigItems.itemZombieBrain, 1), 
 				new ItemStack(Items.potionitem,1, 16424), new ItemStack(Items.golden_apple), 
 				new ItemStack(Items.water_bucket));
 		registerResearchItemI("BRAINCURE","BRAINCUREALT4", new ItemStack(ThaumicExploration.pureZombieBrain), 3, 
 				new AspectList().add(Aspect.MAN, 4).add(Aspect.MIND, 6).add(Aspect.HEAL, 2), 
-				new ItemStack(ConfigItems.itemResource, 1,5), 
+				new ItemStack(ConfigItems.itemZombieBrain, 1), 
 				new ItemStack(Items.potionitem,1, 16456), new ItemStack(Items.golden_apple), 
 				new ItemStack(Items.water_bucket));
 		registerResearchItemI("BRAINCURE","BRAINCUREALT5", new ItemStack(ThaumicExploration.pureZombieBrain), 3, 
 				new AspectList().add(Aspect.MAN, 4).add(Aspect.MIND, 6).add(Aspect.HEAL, 2), 
-				new ItemStack(ConfigItems.itemResource, 1,5), 
+				new ItemStack(ConfigItems.itemZombieBrain, 1), 
 				new ItemStack(Items.potionitem,1, 8200), new ItemStack(Items.golden_apple), 
 				new ItemStack(Items.water_bucket));
 		
