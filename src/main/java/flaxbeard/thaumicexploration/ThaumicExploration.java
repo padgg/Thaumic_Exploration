@@ -7,6 +7,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 
 import flaxbeard.thaumicexploration.block.*;
+import flaxbeard.thaumicexploration.chunkLoader.ChunkLoaderCallback;
 import flaxbeard.thaumicexploration.tile.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -23,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.oredict.OreDictionary;
@@ -429,6 +431,7 @@ public class ThaumicExploration {
 		
 		discountRing = new ItemBaubleDiscountRing().setCreativeTab(tab).setUnlocalizedName("thaumicexploration:discountRing").setTextureName("thaumicExploration:discountRing");
 		GameRegistry.registerItem(discountRing, "discountRing");
+        ForgeChunkManager.setForcedChunkLoadingCallback(instance,new ChunkLoaderCallback());
 	}
 	
 	
