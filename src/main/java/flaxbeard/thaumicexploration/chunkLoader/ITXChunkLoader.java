@@ -7,4 +7,7 @@ import net.minecraftforge.common.ForgeChunkManager;
  */
 public interface ITXChunkLoader {
     void forceChunkLoading(ForgeChunkManager.Ticket ticket);
+
+    void addTicket();
+    void removeTicket(ForgeChunkManager.Ticket ticket);
 }

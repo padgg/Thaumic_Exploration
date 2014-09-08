@@ -1,9 +1,11 @@
 package flaxbeard.thaumicexploration.tile;
 
 import com.mojang.authlib.GameProfile;
+import cpw.mods.fml.client.FMLClientHandler;
 import flaxbeard.thaumicexploration.ThaumicExploration;
 import flaxbeard.thaumicexploration.chunkLoader.ITXChunkLoader;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
@@ -43,6 +45,7 @@ public class TileEntitySoulBrazier extends TileVisRelay  implements IEssentiaTra
     private static int EssentiaRate=5;
     private static int VisRate=5;
     public ForgeChunkManager.Ticket heldChunk;
+    public static boolean renderWisp=false;
     @Override
     public void readCustomNBT(NBTTagCompound nbttagcompound) {
         super.readCustomNBT(nbttagcompound);
@@ -83,33 +86,15 @@ public class TileEntitySoulBrazier extends TileVisRelay  implements IEssentiaTra
     public void updateEntity() {
         super.updateEntity();
         this.count += 1;
-        if(this.count % 10==0) {
+        if(!renderWisp  && FMLClientHandler.instance().getClient().renderViewEntity!=null)
+            renderWisp=true;
+        if(this.count % 10==0 && renderWisp) {
             ThaumicExploration.proxy.spawnActiveBrazierParticle(worldObj,xCoord,yCoord,zCoord);
-        }
-        if(this.count % 60==0) {
-        	int counter = 0;
-        	int tX = 0;
-        	int tY = 0;
-        	int tZ = 0;
-        	boolean found = false;
-        	while (counter < 25 && !found) {
-	        	tX = xCoord - 3 + worldObj.rand.nextInt(7);
-	        	tY = yCoord - 3 + worldObj.rand.nextInt(7);
-	        	tZ = zCoord - 3 + worldObj.rand.nextInt(7);
-	        	counter++;
-	        	if ((worldObj.isAirBlock(tX, tY+1, tZ) && !worldObj.isAirBlock(tX, tY, tZ))) {
-	        		found = true;
-	        		float offsetY = (float) (Math.sin(Math.toRadians(count*1.0F))/4.0F);
-	        		float offsetZ = (float) (Math.sin(Math.toRadians(count*3.0F))/4.0F);
-	        		float offsetX = (float) (Math.cos(Math.toRadians(count*3.0F))/4.0F);
-	        
-	        		ThaumicExploration.proxy.spawnLightningBolt(worldObj, tX, tY, tZ, xCoord+0.5F+offsetX, yCoord+1.5F+offsetY, zCoord+offsetZ+0.5F);
-	        	}
-        	}
         }
         changeTaint();
         if(active) {
-
+            if(heldChunk==null)
+                addTicket();
             getPower();
             spendPower();
             if (!checkPower()) {
@@ -145,9 +130,24 @@ public class TileEntitySoulBrazier extends TileVisRelay  implements IEssentiaTra
             int z = 0;
             int y = 0;
             x = this.xCoord + this.worldObj.rand.nextInt(16) - this.worldObj.rand.nextInt(16);
+
             z = this.zCoord + this.worldObj.rand.nextInt(16) - this.worldObj.rand.nextInt(16);
             BiomeGenBase bg = this.worldObj.getBiomeGenForCoords(x, z);
             if (bg.biomeID != ThaumcraftWorldGenerator.biomeTaint.biomeID) {
+                float offsetY = (float) (Math.sin(Math.toRadians(count*1.0F))/4.0F);
+                float offsetZ = (float) (Math.sin(Math.toRadians(count*3.0F))/4.0F);
+                float offsetX = (float) (Math.cos(Math.toRadians(count*3.0F))/4.0F);
+                boolean found=false;
+                for(int yTest=yCoord-5;yTest<=yCoord+5;yTest++)
+                {
+                    if(worldObj.getBlock(x,yTest,z)!=Blocks.air && worldObj.getBlock(x,yTest,z)==Blocks.air)
+                    {
+                        found=true;
+                        y=yTest;
+                        break;
+                    }
+                }
+                ThaumicExploration.proxy.spawnLightningBolt(worldObj,  xCoord+0.5F+offsetX, yCoord+1.5F+offsetY, zCoord+offsetZ+0.5F,x, found?y:yCoord-1, z);
                 Utils.setBiomeAt(this.worldObj, x, z, ThaumcraftWorldGenerator.biomeTaint);
             }
             if ((Config.hardNode) && (this.worldObj.rand.nextBoolean())) {
@@ -232,39 +232,30 @@ public class TileEntitySoulBrazier extends TileVisRelay  implements IEssentiaTra
     public boolean renderExtendedTube() {
         return false;
     }
-    @Override
-    public void invalidate()
-    {
-        this.forceChunkLoading(null);
-    }
-    @Override
-    public void validate()
-    {
-        this.forceChunkLoading(null);
-    }
+
     @Override
     public void forceChunkLoading(ForgeChunkManager.Ticket ticket) {
-        if (ticket != null)
-        {
+
             this.heldChunk = ticket;
             ForgeChunkManager.forceChunk(this.heldChunk, new ChunkCoordIntPair(this.xCoord >> 4, this.zCoord >> 4));
-        }
-        else
-        {
-            if (this.heldChunk == null)
-            {
-                ForgeChunkManager.Ticket newTicket = ForgeChunkManager.requestTicket(ThaumicExploration.instance, this.worldObj, ForgeChunkManager.Type.NORMAL);
-                newTicket.getModData().setInteger("xCoord", this.xCoord);
-                newTicket.getModData().setInteger("yCoord", this.yCoord);
-                newTicket.getModData().setInteger("zCoord", this.zCoord);
-                this.heldChunk = newTicket;
-                ForgeChunkManager.forceChunk(this.heldChunk, new ChunkCoordIntPair(this.xCoord >> 4, this.zCoord >> 4));
-            }
-            else
-            {
-                ForgeChunkManager.releaseTicket(this.heldChunk);
-                this.heldChunk = null;
-            }
+    }
+
+    @Override
+    public void addTicket() {
+        ForgeChunkManager.Ticket newTicket = ForgeChunkManager.requestTicket(ThaumicExploration.instance, this.worldObj, ForgeChunkManager.Type.NORMAL);
+        newTicket.getModData().setInteger("xCoord", this.xCoord);
+        newTicket.getModData().setInteger("yCoord", this.yCoord);
+        newTicket.getModData().setInteger("zCoord", this.zCoord);
+        newTicket.getModData().setBoolean("warpChunk", true);
+        this.heldChunk = newTicket;
+        ForgeChunkManager.forceChunk(this.heldChunk, new ChunkCoordIntPair(this.xCoord >> 4, this.zCoord >> 4));
+    }
+
+    @Override
+    public void removeTicket(ForgeChunkManager.Ticket ticket) {
+        if(heldChunk!=null) {
+            ForgeChunkManager.releaseTicket(this.heldChunk);
+            this.heldChunk = null;
         }
     }
 }

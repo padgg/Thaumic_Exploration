@@ -41,8 +41,10 @@ public class ChunkLoaderCallback implements ForgeChunkManager.OrderedLoadingCall
                 if (world.getTileEntity(xPos, yPos, zPos) instanceof ITXChunkLoader)
                 {
                     ((ITXChunkLoader)world.getTileEntity(xPos, yPos, zPos)).forceChunkLoading(ticket);
+                    continue;
                 }
             }
+            ForgeChunkManager.releaseTicket(ticket);
         }
     }
 }
