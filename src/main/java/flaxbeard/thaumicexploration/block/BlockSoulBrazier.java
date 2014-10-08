@@ -1,5 +1,7 @@
 package flaxbeard.thaumicexploration.block;
 
+import com.mojang.authlib.GameProfile;
+import cpw.mods.fml.common.FMLCommonHandler;
 import flaxbeard.thaumicexploration.ThaumicExploration;
 import flaxbeard.thaumicexploration.tile.TileEntitySoulBrazier;
 import net.minecraft.block.Block;
@@ -32,7 +34,7 @@ public class BlockSoulBrazier extends BlockContainer {
     public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_) {
         super.breakBlock(p_149749_1_, p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_, p_149749_6_);
         TileEntitySoulBrazier entity=((TileEntitySoulBrazier) p_149749_1_.getTileEntity(p_149749_2_, p_149749_3_, p_149749_4_));
-        Thaumcraft.proxy.getPlayerKnowledge().addWarp(entity.owner.getName(), entity.storedWarp);
+        Thaumcraft.proxy.getPlayerKnowledge().addWarpPerm(entity.owner.getName(), entity.storedWarp);
     }
 
     @Override
@@ -52,7 +54,9 @@ public class BlockSoulBrazier extends BlockContainer {
     @Override
     public void onBlockPlacedBy(World p_149689_1_, int p_149689_2_, int p_149689_3_, int p_149689_4_, EntityLivingBase p_149689_5_, ItemStack p_149689_6_) {
         super.onBlockPlacedBy(p_149689_1_, p_149689_2_, p_149689_3_, p_149689_4_, p_149689_5_, p_149689_6_);
-        ((TileEntitySoulBrazier)p_149689_1_.getTileEntity(p_149689_2_,p_149689_3_,p_149689_4_)).owner=((EntityPlayer)p_149689_5_).getGameProfile();
+
+        GameProfile profile=((EntityPlayer)p_149689_5_).getGameProfile();
+                ((TileEntitySoulBrazier) p_149689_1_.getTileEntity(p_149689_2_, p_149689_3_, p_149689_4_)).owner=profile;
     }
 
 

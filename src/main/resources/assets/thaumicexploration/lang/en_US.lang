@@ -56,6 +56,8 @@ potion.taintWithdrawl=Taint Withdrawl
 
 ----Misc---
 soulbrazier.invalidplayer=The brazier grumbles and spits as it refuses to work for an unknown soul
+soulbrazier.nopower=The brazier spluters as it's reserves are too dry.
+
 ----Enchantment Names----
 enchantment.binding=Binding
 enchantment.nightVision=Night Vision

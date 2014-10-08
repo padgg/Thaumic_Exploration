@@ -49,7 +49,6 @@ public class TileEntityTrashJar extends TileJarFillable {
     public void updateEntity()
     {
     	if (this.worldObj.isRemote) {
-	        this.spazattack = 10;
 	        for (int i=0;i<3;i++) {
 	        	double[] pos1 = {xCoord+Math.random(),yCoord+Math.random(),zCoord+Math.random()};
 	        	double[] pos2 = {pos1[0]+(Math.random()/2)-0.25F,pos1[1]+(Math.random()/2)-0.25F,pos1[2]+(Math.random()/2)-0.25F};

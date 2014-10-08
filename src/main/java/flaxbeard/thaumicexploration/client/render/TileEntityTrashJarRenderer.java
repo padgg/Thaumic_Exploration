@@ -37,22 +37,21 @@ public class TileEntityTrashJarRenderer
   
   public void renderTileEntityAt(TileJar tile, double x, double y, double z, float f)
   {
-    float wobble = Math.max(Math.abs(tile.wobblex), Math.abs(tile.wobblez)) / 150.0F;
+
     if ((tile instanceof TileJarNode))
     {
       GL11.glPushMatrix();
-      GL11.glTranslatef(0.0F, -0.1F + wobble, 0.0F);
+      GL11.glTranslatef(0.0F, -0.1F, 0.0F);
       this.tnr.renderTileEntityAt(tile, x, y, z, f);
       GL11.glPopMatrix();
     }
     GL11.glPushMatrix();
     GL11.glDisable(2884);
     
-    GL11.glTranslatef((float)x + 0.5F, (float)y + 0.01F + wobble, (float)z + 0.5F);
+    GL11.glTranslatef((float)x + 0.5F, (float)y + 0.01F , (float)z + 0.5F);
     GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
     
-    GL11.glRotatef(tile.wobblex, 0.0F, 0.0F, 1.0F);
-    GL11.glRotatef(tile.wobblez, 1.0F, 0.0F, 0.0F);
+
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     if ((tile instanceof TileJarFillable))
     {

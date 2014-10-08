@@ -42,8 +42,8 @@ public class TileEntitySoulBrazier extends TileVisRelay  implements IEssentiaTra
     private int ticks=0;
     private static int EssentiaCapacity=16;
     private static int VisCapacity=16;
-    private static int EssentiaRate=5;
-    private static int VisRate=5;
+    private static int EssentiaRate=3;
+    private static int VisRate=3;
     public ForgeChunkManager.Ticket heldChunk;
     public static boolean renderWisp=false;
     @Override
@@ -72,14 +72,23 @@ public class TileEntitySoulBrazier extends TileVisRelay  implements IEssentiaTra
 
     public boolean setActive(EntityPlayer player)
     {
-        if(!player.getGameProfile().getId().equals(owner.getId())) {
+
+        if(!EntityPlayer.func_146094_a(player.getGameProfile()).equals(owner.getId())) {
             if(worldObj.isRemote)
                 player.addChatComponentMessage(new ChatComponentTranslation("soulbrazier.invalidplayer"));
             return false;
         }
+        if(!checkPower())
+        {
+
+            if(worldObj.isRemote)
+                player.addChatComponentMessage(new ChatComponentTranslation("soulbrazier.nopower"));
+            return false;
+        }
         active=true;
-        Thaumcraft.proxy.getPlayerKnowledge().addWarp(owner.getName(),-2);
-        storedWarp+=2;
+        storedWarp+=Thaumcraft.proxy.getPlayerKnowledge().getWarpPerm(owner.getName());
+        Thaumcraft.proxy.getPlayerKnowledge().setWarpPerm(owner.getName(),0);
+
         return true;
     }
     @Override
@@ -88,35 +97,54 @@ public class TileEntitySoulBrazier extends TileVisRelay  implements IEssentiaTra
         this.count += 1;
         if(!renderWisp  && FMLClientHandler.instance().getClient().renderViewEntity!=null)
             renderWisp=true;
-        if(this.count % 10==0 && renderWisp) {
+        if(this.count % 10==0 && renderWisp && active) {
             ThaumicExploration.proxy.spawnActiveBrazierParticle(worldObj,xCoord,yCoord,zCoord);
         }
+        if ((++this.count % 5 == 0) && (this.currentEssentia < this.EssentiaCapacity))
+            fillJar();
         changeTaint();
+
+        getPower();
         if(active) {
             if(heldChunk==null)
                 addTicket();
-            getPower();
-            spendPower();
+            if (++this.count % 15 == 0)
+                spendPower();
             if (!checkPower()) {
                 active = false;
-                Thaumcraft.proxy.getPlayerKnowledge().addWarp(owner.getName(), storedWarp);
+                Thaumcraft.proxy.getPlayerKnowledge().addWarpPerm(owner.getName(), storedWarp);
                 storedWarp=0;
             }
 
         }
     }
+void fillJar() {
+    TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.worldObj, this.xCoord, this.yCoord, this.zCoord, ForgeDirection.DOWN);
+    if (te != null) {
+        IEssentiaTransport ic = (IEssentiaTransport) te;
+        if (!ic.canOutputTo(ForgeDirection.UP)) return;
 
+        Aspect ta = Aspect.DEATH;
+        if ((ic.getEssentiaAmount(ForgeDirection.UP) > 0) &&
+                (ic.getSuctionAmount(ForgeDirection.UP) < getSuctionAmount(ForgeDirection.UP)) && (getSuctionAmount(ForgeDirection.UP) >= ic.getMinimumSuction())) {
+            ta = ic.getEssentiaType(ForgeDirection.UP);
+        }
+
+        if ((ta != null) && (ic.getSuctionAmount(ForgeDirection.UP) < getSuctionAmount(ForgeDirection.DOWN)))
+            addEssentia(ta, ic.takeEssentia(ta, 1, ForgeDirection.UP),ForgeDirection.DOWN);
+    }
+}
     public boolean checkPower() {
-        return currentEssentia <=0 || currentVis<=0;
+        return currentEssentia >0 && currentVis>0;
     }
 
     private void spendPower() {
-        currentEssentia=Math.min(0,currentEssentia-EssentiaRate);
-        currentVis=Math.min(0,currentVis-VisRate);
+        currentEssentia=Math.max(0,currentEssentia-EssentiaRate);
+        currentVis=Math.max(0,currentVis-VisRate);
     }
 
     private void getPower() {
-        if(this.count % 10==0) {
+        if(this.count % 5==0) {
             if (this.currentVis < VisCapacity) {
                 currentVis += this.consumeVis(Aspect.FIRE, 1);
 
@@ -210,6 +238,7 @@ public class TileEntitySoulBrazier extends TileVisRelay  implements IEssentiaTra
         {
             currentEssentia = EssentiaCapacity;
         }
+        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
         return filled;
     }
 
