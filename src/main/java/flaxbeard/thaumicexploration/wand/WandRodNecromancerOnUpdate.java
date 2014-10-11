@@ -11,8 +11,9 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.wands.IWandRodOnUpdate;
 import thaumcraft.common.entities.EntityAspectOrb;
 import thaumcraft.common.items.wands.ItemWandCasting;
-import thaumcraft.common.lib.InventoryHelper;
+
 import flaxbeard.thaumicexploration.ThaumicExploration;
+import thaumcraft.common.lib.utils.InventoryUtils;
 
 public class WandRodNecromancerOnUpdate implements IWandRodOnUpdate {
 	
@@ -60,7 +61,7 @@ public class WandRodNecromancerOnUpdate implements IWandRodOnUpdate {
 		  
           for(EntityAspectOrb orb : orbs) {
         	  if (!orb.isDead) {
-	        	  int slot = InventoryHelper.isWandInHotbarWithRoom(orb.getAspect(), orb.getAspectValue(), par1EntityPlayer);
+	        	  int slot = InventoryUtils.isWandInHotbarWithRoom(orb.getAspect(), orb.getAspectValue(), par1EntityPlayer);
 	    	      if ((orb.orbCooldown == 0) && (par1EntityPlayer.xpCooldown == 0) && (orb.getAspect().isPrimal()) && (slot >= 0))
 	    	      {
 	    	        ItemWandCasting wand = (ItemWandCasting)par1EntityPlayer.inventory.mainInventory[slot].getItem();

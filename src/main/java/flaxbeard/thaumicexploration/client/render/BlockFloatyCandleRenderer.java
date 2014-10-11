@@ -12,6 +12,7 @@ import thaumcraft.client.renderers.block.BlockRenderer;
 import thaumcraft.common.blocks.BlockCandle;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import flaxbeard.thaumicexploration.ThaumicExploration;
+import thaumcraft.common.lib.utils.Utils;
 
 public class BlockFloatyCandleRenderer
   extends BlockRenderer
@@ -19,7 +20,7 @@ public class BlockFloatyCandleRenderer
 {
   public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
   {
-    Color c = new Color(thaumcraft.common.lib.Utils.colors[metadata]);
+    Color c = new Color(Utils.colors[metadata]);
     float r = c.getRed() / 255.0F;
     float g = c.getGreen() / 255.0F;
     float b = c.getBlue() / 255.0F;

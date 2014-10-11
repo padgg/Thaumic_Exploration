@@ -23,7 +23,8 @@ import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.BlockTaintFibres;
 import thaumcraft.common.config.Config;
-import thaumcraft.common.lib.Utils;
+
+import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
 import thaumcraft.common.tiles.TileVisRelay;
 

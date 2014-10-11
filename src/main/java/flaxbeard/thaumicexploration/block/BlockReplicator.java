@@ -19,11 +19,11 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import thaumcraft.common.items.wands.ItemWandCasting;
-import thaumcraft.common.lib.InventoryHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.thaumicexploration.ThaumicExploration;
 import flaxbeard.thaumicexploration.tile.TileEntityReplicator;
+import thaumcraft.common.lib.utils.InventoryUtils;
 
 public class BlockReplicator extends BlockContainer {
 	
@@ -42,7 +42,7 @@ public class BlockReplicator extends BlockContainer {
 	    TileEntity tileEntity = par1World.getTileEntity(par2, par3, par4);
 	    if (tileEntity != null && tileEntity instanceof TileEntityReplicator) {
 	    	if (((TileEntityReplicator)tileEntity).getStackInSlot(0) != null && ((TileEntityReplicator)tileEntity).getStackInSlot(0).stackSize > 0) {
-	    		InventoryHelper.dropItems(par1World, par2, par3, par4);
+	    		InventoryUtils.dropItems(par1World, par2, par3, par4);
 	    	}
 	    }
 	}
