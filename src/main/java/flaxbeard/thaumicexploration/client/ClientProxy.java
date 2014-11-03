@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
@@ -157,9 +158,7 @@ public class ClientProxy extends CommonProxy
     
     @Override
     public void spawnHarvestParticle(World worldObj, double xCoord, double yCoord, double zCoord, double x2, double y2, double z2) {
-	    FXBoreParticles fb = new FXBoreParticles(worldObj, xCoord, yCoord, zCoord, x2, y2, z2, Items.coal, worldObj.rand.nextInt(6), 3);
-	    
-		
+	    FXBoreParticles fb = new FXBoreParticles(worldObj,xCoord,yCoord,zCoord,x2,y2,z2, Blocks.coal_block,worldObj.rand.nextInt(6), 3);
 	    fb.setAlphaF(0.3F);
 		fb.motionX = ((float)worldObj.rand.nextGaussian() * 0.03F);
 		fb.motionY = ((float)worldObj.rand.nextGaussian() * 0.03F);
