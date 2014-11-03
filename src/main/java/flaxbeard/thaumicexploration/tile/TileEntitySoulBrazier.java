@@ -101,7 +101,7 @@ public class TileEntitySoulBrazier extends TileVisRelay  implements IEssentiaTra
         if(this.count % 10==0 && renderWisp && active) {
             ThaumicExploration.proxy.spawnActiveBrazierParticle(worldObj,xCoord,yCoord,zCoord);
         }
-        if ((++this.count % 5 == 0) && (this.currentEssentia < this.EssentiaCapacity))
+        if ((this.count % 5 == 0) && (this.currentEssentia < this.EssentiaCapacity))
             fillJar();
         changeTaint();
 
@@ -109,7 +109,7 @@ public class TileEntitySoulBrazier extends TileVisRelay  implements IEssentiaTra
         if(active) {
             if(heldChunk==null)
                 addTicket();
-            if (++this.count % 15 == 0)
+            if (this.count % 15 == 0)
                 spendPower();
             if (!checkPower()) {
                 active = false;

@@ -43,7 +43,6 @@ public class TileEntityCrucibleSouls extends TileEntity implements IAspectContai
         //par1NBTTagCompound.setInteger("drainTicks",this.drainTicks);
         par1NBTTagCompound.setFloat("myFlux",this.myFlux);
         if (this.drainTicks > 0) {
-        	//par1NBTTagCompound.setInteger("targetID",this.targetMob.entityId);
         }
         NBTTagCompound aspects = new NBTTagCompound();
     	
