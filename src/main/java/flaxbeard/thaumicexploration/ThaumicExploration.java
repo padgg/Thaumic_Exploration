@@ -6,8 +6,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import flaxbeard.thaumicexploration.block.*;
 import flaxbeard.thaumicexploration.chunkLoader.ChunkLoaderCallback;
+import flaxbeard.thaumicexploration.commands.CommandAlterRate;
 import flaxbeard.thaumicexploration.tile.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -433,7 +435,13 @@ public class ThaumicExploration {
 		GameRegistry.registerItem(discountRing, "discountRing");
         ForgeChunkManager.setForcedChunkLoadingCallback(instance,new ChunkLoaderCallback());
 	}
-	
+
+
+	@EventHandler
+	public void serverLoad(FMLServerStartingEvent event)
+	{
+		event.registerServerCommand(new CommandAlterRate());
+	}
 	
 
 	@EventHandler

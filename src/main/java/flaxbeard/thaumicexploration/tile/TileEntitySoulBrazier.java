@@ -43,8 +43,8 @@ public class TileEntitySoulBrazier extends TileVisRelay  implements IEssentiaTra
     private int ticks=0;
     private static int EssentiaCapacity=16;
     private static int VisCapacity=16;
-    private static int EssentiaRate=3;
-    private static int VisRate=3;
+    public static int EssentiaRate=3;
+    public static int VisRate=3;
     public ForgeChunkManager.Ticket heldChunk;
     public static boolean renderWisp=false;
     @Override
