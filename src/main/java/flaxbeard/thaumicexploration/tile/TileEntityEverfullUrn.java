@@ -21,6 +21,7 @@ import thaumcraft.common.tiles.TileCrucible;
 
 import cpw.mods.fml.common.Loader;
 import flaxbeard.thaumicexploration.ThaumicExploration;
+import thaumcraft.common.tiles.TileSpa;
 //import flaxbeard.thaumicexploration.integration.BotaniaIntegration;
 
 public class TileEntityEverfullUrn extends TileEntity implements IFluidTank,IFluidHandler {
@@ -93,9 +94,9 @@ public class TileEntityEverfullUrn extends TileEntity implements IFluidTank,IFlu
 		if (!resource.isFluidEqual(new FluidStack(FluidRegistry.WATER,1)) || !(from == ForgeDirection.UP)) {
 			return null;
 		}
-		
+
 		return this.drain(resource.amount, doDrain);
-		
+
 	}
 
 	@Override
@@ -128,18 +129,18 @@ public class TileEntityEverfullUrn extends TileEntity implements IFluidTank,IFlu
 		// TODO Auto-generated method stub
 		return new FluidTankInfo[] { this.getInfo() };
 	}
-	
+
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
 		this.ticks++;
 		if (this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord).getMaterial() == Material.air || this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord).getMaterial() == Config.airyMaterial) {
-			
+
 			if (this.drainTicks > 0 && drainType == 1) {
 				if (this.worldObj.getBlock(this.dX, this.dY, this.dZ) == ConfigBlocks.blockMetalDevice) {
 					if (this.worldObj.getBlockMetadata(this.dX, this.dY, this.dZ) == 0) {
 						TileCrucible tile = ((TileCrucible)(this.worldObj.getTileEntity(this.dX, this.dY, this.dZ)));
-						if (tile.tank.getFluidAmount() < tile.tank.getCapacity()) 
+						if (tile.tank.getFluidAmount() < tile.tank.getCapacity())
 						{
 							this.drainTicks = (tile.tank.getCapacity() - tile.tank.getFluidAmount())/10;
 							if (this.excessTicks > (20 * this.distance)) {
@@ -147,7 +148,7 @@ public class TileEntityEverfullUrn extends TileEntity implements IFluidTank,IFlu
 							}
 							if (this.drainTicks % 5 == 0 && this.worldObj.isRemote && this.excessTicks < (40 * this.distance)) {
 								ThaumicExploration.proxy.spawnWaterAtLocation(this.worldObj, this.xCoord+0.5F, this.yCoord+1.1F, this.zCoord+0.5F, this.dX+0.5F, this.dY+1.1F, this.dZ+0.5F);
-				        		
+
 							}
 							this.excessTicks++;
 				        	this.drainTicks--;
@@ -161,18 +162,17 @@ public class TileEntityEverfullUrn extends TileEntity implements IFluidTank,IFlu
 					{
 						this.drainTicks = 0;
 					}
-				}	
+				}
 				else
 				{
 					this.drainTicks = 0;
 				}
 			}
-			if (this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord).getMaterial() == Material.air || this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord).getMaterial() == Config.airyMaterial) {
 
 				if (this.drainTicks > 0 && drainType == 1) {
-					if (this.worldObj.getBlock(this.dX, this.dY, this.dZ) == ConfigBlocks) {
-						if (this.worldObj.getBlockMetadata(this.dX, this.dY, this.dZ) == 0) {
-							TileCrucible tile = ((TileCrucible)(this.worldObj.getTileEntity(this.dX, this.dY, this.dZ)));
+					if (this.worldObj.getBlock(this.dX, this.dY, this.dZ) == ConfigBlocks.blockStoneDevice) {
+						if (this.worldObj.getBlockMetadata(this.dX, this.dY, this.dZ) == 12) {
+							TileSpa tile = ((TileSpa)(this.worldObj.getTileEntity(this.dX, this.dY, this.dZ)));
 							if (tile.tank.getFluidAmount() < tile.tank.getCapacity())
 							{
 								this.drainTicks = (tile.tank.getCapacity() - tile.tank.getFluidAmount())/10;
@@ -233,12 +233,12 @@ public class TileEntityEverfullUrn extends TileEntity implements IFluidTank,IFlu
 			    this.drainTicks = 0;
 				}
 			}
-			
+
 			if (this.drainTicks > 0 && drainType == 2) {
 				EntityPlayer player = this.burningPlayer;
 				List<EntityPlayer> players = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(this.xCoord-this.range, this.yCoord-this.yRange, this.zCoord-this.range, this.xCoord+this.range, this.yCoord+this.yRange, this.zCoord+this.range));
 				if (players.contains(player) && player.isBurning()) {
-					
+
 					if (this.drainTicks % 3 == 0 && this.worldObj.isRemote && this.excessTicks < (40 * this.distance)) {
 						ThaumicExploration.proxy.spawnWaterOnPlayer(this.worldObj, this.xCoord,this.yCoord,this.zCoord, player);
 					}
@@ -262,14 +262,14 @@ public class TileEntityEverfullUrn extends TileEntity implements IFluidTank,IFlu
 				{
 					this.drainTicks = 0;
 				}
-				
+
 			}
-			
-			
+
+
 			if (ticks%2 == 0 && this.worldObj.isRemote && (this.drainTicks <= 0 || this.excessTicks > (40 * this.distance))) {
 				ThaumicExploration.proxy.spawnRandomWaterFountain(this.worldObj, this.xCoord,this.yCoord,this.zCoord);
 			}
-			
+
 			if (ticks%5 == 0) {
 				if (this.drainTicks == 0 || this.drainType != 2) {
 					List<EntityPlayer> players = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(this.xCoord-this.range, this.yCoord-this.yRange, this.zCoord-this.range, this.xCoord+this.range, this.yCoord+this.yRange, this.zCoord+this.range));
@@ -292,7 +292,7 @@ public class TileEntityEverfullUrn extends TileEntity implements IFluidTank,IFlu
 									if (this.worldObj.getBlockMetadata(this.xCoord+x, this.yCoord+y, this.zCoord+z) == 0) {
 
 										TileCrucible tile = ((TileCrucible)(this.worldObj.getTileEntity(this.xCoord+x, this.yCoord+y, this.zCoord+z)));
-										if (tile.tank.getFluidAmount() < tile.tank.getCapacity()) 
+										if (tile.tank.getFluidAmount() < tile.tank.getCapacity())
 										{
 											distance=(float) Math.sqrt(Math.pow(x,2) + Math.pow(y,2) + Math.pow(z,2));
 											this.drainTicks = (tile.tank.getCapacity() - tile.tank.getFluidAmount())/10;
@@ -303,7 +303,25 @@ public class TileEntityEverfullUrn extends TileEntity implements IFluidTank,IFlu
 											this.dZ = this.zCoord+z;
 											break;
 										}
-										
+
+									}
+								}
+								if (this.worldObj.getBlock(this.xCoord+x, this.yCoord+y, this.zCoord+z) == ConfigBlocks.blockStoneDevice) {
+									if (this.worldObj.getBlockMetadata(this.xCoord+x, this.yCoord+y, this.zCoord+z) == 12) {
+
+										TileSpa tile = ((TileSpa)(this.worldObj.getTileEntity(this.xCoord+x, this.yCoord+y, this.zCoord+z)));
+										if (tile.tank.getFluidAmount() < tile.tank.getCapacity())
+										{
+											distance=(float) Math.sqrt(Math.pow(x,2) + Math.pow(y,2) + Math.pow(z,2));
+											this.drainTicks = (tile.tank.getCapacity() - tile.tank.getFluidAmount())/10;
+											this.excessTicks = 0;
+											this.drainType = 1;
+											this.dX = this.xCoord+x;
+											this.dY = this.yCoord+y;
+											this.dZ = this.zCoord+z;
+											break;
+										}
+
 									}
 								}
 								if (Loader.isModLoaded("Botania")) {
