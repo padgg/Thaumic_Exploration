@@ -169,7 +169,7 @@ public class TileEntityEverfullUrn extends TileEntity implements IFluidTank,IFlu
 				}
 			}
 
-				if (this.drainTicks > 0 && drainType == 1) {
+				if (this.drainTicks > 0 && drainType == 4) {
 					if (this.worldObj.getBlock(this.dX, this.dY, this.dZ) == ConfigBlocks.blockStoneDevice) {
 						if (this.worldObj.getBlockMetadata(this.dX, this.dY, this.dZ) == 12) {
 							TileSpa tile = ((TileSpa)(this.worldObj.getTileEntity(this.dX, this.dY, this.dZ)));
@@ -307,15 +307,17 @@ public class TileEntityEverfullUrn extends TileEntity implements IFluidTank,IFlu
 									}
 								}
 								if (this.worldObj.getBlock(this.xCoord+x, this.yCoord+y, this.zCoord+z) == ConfigBlocks.blockStoneDevice) {
-									if (this.worldObj.getBlockMetadata(this.xCoord+x, this.yCoord+y, this.zCoord+z) == 12) {
+									if ( this.worldObj.getBlockMetadata(this.xCoord+x, this.yCoord+y, this.zCoord+z) == 12) {
 
 										TileSpa tile = ((TileSpa)(this.worldObj.getTileEntity(this.xCoord+x, this.yCoord+y, this.zCoord+z)));
-										if (tile.tank.getFluidAmount() < tile.tank.getCapacity())
+										int amount=tile.tank.getFluidAmount();
+										int capacity=tile.tank.getCapacity();
+										if ( amount< capacity)
 										{
 											distance=(float) Math.sqrt(Math.pow(x,2) + Math.pow(y,2) + Math.pow(z,2));
 											this.drainTicks = (tile.tank.getCapacity() - tile.tank.getFluidAmount())/10;
 											this.excessTicks = 0;
-											this.drainType = 1;
+											this.drainType = 4;
 											this.dX = this.xCoord+x;
 											this.dY = this.yCoord+y;
 											this.dZ = this.zCoord+z;
