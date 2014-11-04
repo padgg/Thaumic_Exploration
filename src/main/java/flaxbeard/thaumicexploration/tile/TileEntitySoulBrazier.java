@@ -180,9 +180,9 @@ void fillJar() {
                 Utils.setBiomeAt(this.worldObj, x, z, ThaumcraftWorldGenerator.biomeTaint);
             }
             if ((Config.hardNode) && (this.worldObj.rand.nextBoolean())) {
-                x = this.xCoord + this.worldObj.rand.nextInt(10) - this.worldObj.rand.nextInt(10);
-                z = this.zCoord + this.worldObj.rand.nextInt(10) - this.worldObj.rand.nextInt(10);
-                y = this.yCoord + this.worldObj.rand.nextInt(10) - this.worldObj.rand.nextInt(10);
+                x = this.xCoord + this.worldObj.rand.nextInt(16) - this.worldObj.rand.nextInt(16);
+                z = this.zCoord + this.worldObj.rand.nextInt(16) - this.worldObj.rand.nextInt(16);
+                y = this.yCoord + this.worldObj.rand.nextInt(16) - this.worldObj.rand.nextInt(16);
                 if (!BlockTaintFibres.spreadFibres(this.worldObj, x, y, z)) ;
             }
             this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);

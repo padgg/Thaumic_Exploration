@@ -10,6 +10,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import flaxbeard.thaumicexploration.block.*;
 import flaxbeard.thaumicexploration.chunkLoader.ChunkLoaderCallback;
 import flaxbeard.thaumicexploration.commands.CommandAlterRate;
+import flaxbeard.thaumicexploration.commands.CommandCheckWarp;
 import flaxbeard.thaumicexploration.tile.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -441,6 +442,7 @@ public class ThaumicExploration {
 	public void serverLoad(FMLServerStartingEvent event)
 	{
 		event.registerServerCommand(new CommandAlterRate());
+		event.registerServerCommand(new CommandCheckWarp());
 	}
 	
 

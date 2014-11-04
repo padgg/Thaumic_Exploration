@@ -167,7 +167,40 @@ public class TileEntityEverfullUrn extends TileEntity implements IFluidTank,IFlu
 					this.drainTicks = 0;
 				}
 			}
-			
+			if (this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord).getMaterial() == Material.air || this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord).getMaterial() == Config.airyMaterial) {
+
+				if (this.drainTicks > 0 && drainType == 1) {
+					if (this.worldObj.getBlock(this.dX, this.dY, this.dZ) == ConfigBlocks) {
+						if (this.worldObj.getBlockMetadata(this.dX, this.dY, this.dZ) == 0) {
+							TileCrucible tile = ((TileCrucible)(this.worldObj.getTileEntity(this.dX, this.dY, this.dZ)));
+							if (tile.tank.getFluidAmount() < tile.tank.getCapacity())
+							{
+								this.drainTicks = (tile.tank.getCapacity() - tile.tank.getFluidAmount())/10;
+								if (this.excessTicks > (20 * this.distance)) {
+									tile.fill(ForgeDirection.SOUTH, new FluidStack(FluidRegistry.WATER, 10), true);
+								}
+								if (this.drainTicks % 5 == 0 && this.worldObj.isRemote && this.excessTicks < (40 * this.distance)) {
+									ThaumicExploration.proxy.spawnWaterAtLocation(this.worldObj, this.xCoord+0.5F, this.yCoord+1.1F, this.zCoord+0.5F, this.dX+0.5F, this.dY+1.1F, this.dZ+0.5F);
+
+								}
+								this.excessTicks++;
+								this.drainTicks--;
+							}
+							else
+							{
+								this.drainTicks = 0;
+							}
+						}
+						else
+						{
+							this.drainTicks = 0;
+						}
+					}
+					else
+					{
+						this.drainTicks = 0;
+					}
+				}
 			if (this.drainTicks > 0 && drainType == 3) {
 				if (Loader.isModLoaded("Botania")) {
 					if (this.worldObj.getBlock(this.dX, this.dY, this.dZ) == BotaniaIntegration.getAltar()) {
