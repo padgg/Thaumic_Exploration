@@ -5,6 +5,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 import flaxbeard.thaumicexploration.ThaumicExploration;
 import flaxbeard.thaumicexploration.chunkLoader.ITXChunkLoader;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
@@ -24,6 +25,9 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.BlockTaintFibres;
 import thaumcraft.common.config.Config;
 
+import thaumcraft.common.lib.network.PacketHandler;
+import thaumcraft.common.lib.network.playerdata.PacketSyncWarp;
+import thaumcraft.common.lib.network.playerdata.PacketWarpMessage;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
 import thaumcraft.common.tiles.TileVisRelay;
@@ -73,23 +77,24 @@ public class TileEntitySoulBrazier extends TileVisRelay  implements IEssentiaTra
 
     public boolean setActive(EntityPlayer player)
     {
+        if(!worldObj.isRemote) {
+            if (!EntityPlayer.func_146094_a(player.getGameProfile()).equals(owner.getId())) {
 
-        if(!EntityPlayer.func_146094_a(player.getGameProfile()).equals(owner.getId())) {
-            if(worldObj.isRemote)
-                player.addChatComponentMessage(new ChatComponentTranslation("soulbrazier.invalidplayer"));
-            return false;
-        }
-        if(!checkPower())
-        {
+                    player.addChatComponentMessage(new ChatComponentTranslation("soulbrazier.invalidplayer"));
+                return false;
+            }
+            if (!checkPower()) {
 
-            if(worldObj.isRemote)
+
                 player.addChatComponentMessage(new ChatComponentTranslation("soulbrazier.nopower"));
-            return false;
+                return false;
+            }
+            active = true;
+            storedWarp += Thaumcraft.proxy.getPlayerKnowledge().getWarpPerm(owner.getName());
+            Thaumcraft.proxy.getPlayerKnowledge().setWarpPerm(owner.getName(), 0);
+            worldObj.markBlockForUpdate(xCoord,yCoord,zCoord);
+            return true;
         }
-        active=true;
-        storedWarp+=Thaumcraft.proxy.getPlayerKnowledge().getWarpPerm(owner.getName());
-        Thaumcraft.proxy.getPlayerKnowledge().setWarpPerm(owner.getName(),0);
-
         return true;
     }
     @Override
@@ -113,8 +118,12 @@ public class TileEntitySoulBrazier extends TileVisRelay  implements IEssentiaTra
                 spendPower();
             if (!checkPower()) {
                 active = false;
-                Thaumcraft.proxy.getPlayerKnowledge().addWarpPerm(owner.getName(), storedWarp);
+                if(!worldObj.isRemote) {
+                    int temp = Thaumcraft.proxy.getPlayerKnowledge().getWarpPerm(owner.getName()) + storedWarp;
+                    Thaumcraft.proxy.getPlayerKnowledge().setWarpPerm(owner.getName(), temp);
+                }
                 storedWarp=0;
+                worldObj.markBlockForUpdate(xCoord,yCoord,zCoord);
             }
 
         }
@@ -288,4 +297,5 @@ void fillJar() {
             this.heldChunk = null;
         }
     }
+
 }
