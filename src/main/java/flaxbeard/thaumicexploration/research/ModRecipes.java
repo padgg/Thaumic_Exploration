@@ -71,6 +71,8 @@ public final class ModRecipes {
 
 
 	private static void initInfusionRecipes() {
+		registerResearchItemI("SOULBRAZIER", new ItemStack(ThaumicExploration.soulBrazier), 7,
+				new AspectList().add(Aspect.DEATH, 32).add(Aspect.DARKNESS, 32).add(Aspect.AURA, 32), new ItemStack(Items.nether_star),new ItemStack(ConfigItems.itemZombieBrain),new ItemStack(ConfigItems.itemResource, 1, 16),new ItemStack(ConfigItems.itemResource, 1, 16));
 		registerResearchItemI("BRAINCURE", new ItemStack(ThaumicExploration.pureZombieBrain), 3, 
 				new AspectList().add(Aspect.MAN, 4).add(Aspect.MIND, 6).add(Aspect.HEAL, 2), 
 				new ItemStack(ConfigItems.itemZombieBrain, 1), 

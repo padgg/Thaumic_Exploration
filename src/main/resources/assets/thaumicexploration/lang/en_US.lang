@@ -131,6 +131,7 @@ tile.thaumicexploration:everfullUrn.name=Everfull Urn
 tile.thaumicexploration:crucibleSouls.name=Crucible of Souls
 tile.thaumicexploration:replicator.name=Thaumic Replicator
 tile.thaumicexploration:trashJar.name=Oblivion Jar
+tile.thaumicexploration:soulBrazier=Soul Brazier
 
 tile.thaumicexploration:floatCandle.0.name=White Floating Candle
 tile.thaumicexploration:floatCandle.1.name=Orange Floating Candle
@@ -160,6 +161,12 @@ te.name.TRASHJAR=Oblivion Jar
 te.tag.TRASHJAR=Essentia disposal
 te.text.TRASHJAR.1=While void jars are very useful in getting rid of large amounts of a certain type of essentia, you often find your infusion room overflowing with several types. Instead of wasting time making a void jar for every mystical aspect, you decided that there must be an easier solution. That solution has manifested itself in the form of the oblivion jar.<BR><BR>While significantly more expensive than its void or warded counterparts, only one oblivion jar is necessary to handle all of the excess essentia from a network. It will obliterate all essentia that enters the jar, much like a filled void jar does.
 te.text.TRASHJAR.2=The oblivion jar has the lowest suction of any jar, meaning that it will only take essentia that has nowhere else to go. Golems may interact with this jar as well, if they do not find another jar that can handle the essentia they are carrying.
+
+--Soul Brazier
+te.name.SOULBRAZIER=Soul Brazier
+te.tag.SOULBRAZIER=Warp is bad mmkay?
+te.text.SOULBRAZIER.1=Warp is a dangerous, malicious force. While in a mind, it is bad enough, released onto the world it is worse, this is why we have made a way to hold this warp safeish. It needs both vis from a node, and Mortus essentia, but it can hold the warp the player has, without too much damage to the enviroment
+
 
 --Taintacle Ring
 te.name.TENTACLERING=Taintacle Ring

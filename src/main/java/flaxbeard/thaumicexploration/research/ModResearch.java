@@ -43,13 +43,17 @@ public final class ModResearch {
         	scer.add((IArcaneRecipe) ConfigResearch.recipes.get("DISCOUNTRINGS"+i));
         }
         research.setPages(new ResearchPage("1"), new ResearchPage((IArcaneRecipe[])scer.toArray(new IArcaneRecipe[0])));
-        
+
+
         //Curing
         research = new FauxResearchItem("TXTALLOW","TX","TALLOW","ALCHEMY",-6,-11,getOriginalItem("TALLOW","ALCHEMY")).registerResearchItem();
         research = new FauxResearchItem("TXINFUSION","TX","INFUSION","ARTIFICE",2,-7,getOriginalItem("INFUSION","ARTIFICE")).registerResearchItem();
         research = new TXResearchItem("FLESHCURE", "TX", new AspectList().add(Aspect.ARMOR, 1).add(Aspect.FLESH, 3).add(Aspect.EXCHANGE, 2), -4, -10, 1, new ItemStack(Items.rotten_flesh)).setParents("TXTALLOW").setParentsHidden("TALLOW").setHidden().setSecondary().setItemTriggers(new ItemStack[] {new ItemStack(Items.rotten_flesh,1,32767)}).registerResearchItem();
         research.setPages(new ResearchPage("1"), cruciblePage("FLESHCURE"));
-        
+
+
+        research=new TXResearchItem("SOULBRAZIER","TX",new AspectList().add(Aspect.AURA,3).add(Aspect.ELDRITCH,3),-6,-10,0,new ItemStack(ThaumicExploration.soulBrazier)).registerResearchItem();
+        research.setPages(new ResearchPage("1"),infusionPage("SOULBRAZIER"));
         research = new TXResearchItem("FLOATCANDLE", "TX", new AspectList().add(Aspect.MAGIC, 1).add(Aspect.FLESH, 2).add(Aspect.AIR, 3), -7, -9, 1, new ItemStack(ThaumicExploration.floatCandle)).setParents("TXTALLOW","TALLOW").setConcealed().setSecondary().registerResearchItem();
         research.setPages(new ResearchPage("1"), arcaneRecipePage("FLOATCANDLE"));
       
