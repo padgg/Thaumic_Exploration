@@ -1,5 +1,6 @@
 package flaxbeard.thaumicexploration.item;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.mojang.authlib.GameProfile;
@@ -18,10 +19,13 @@ import flaxbeard.thaumicexploration.misc.FakePlayerPotion;
 
 public class ItemFoodTalisman extends Item {
 
+	public static List<String> foodBlacklist=new ArrayList<String>();
 	public ItemFoodTalisman(int par1) {
 		super();
 		this.maxStackSize = 1;
 		//this.setMaxDamage(100);
+		foodBlacklist.add(ConfigItems.itemManaBean.getUnlocalizedName());
+		foodBlacklist.add(ConfigItems.itemZombieBrain.getUnlocalizedName());
 	}
 
 
@@ -107,7 +111,13 @@ public class ItemFoodTalisman extends Item {
 	}
 
 	private boolean isEdible(ItemStack food, EntityPlayer player) {
-		if (food.getItem() instanceof ItemFood && food.getItem() != ConfigItems.itemManaBean) {
+		String foodName=food.getUnlocalizedName();
+		for(String item:foodBlacklist)
+		{
+			if(item==foodName)
+				return false;
+		}
+		if (food.getItem() instanceof ItemFood ) {
 
 			for (int i = 1; i < 25; i++) {
 				EntityPlayer fakePlayer = new FakePlayerPotion(player.worldObj, new GameProfile(null, "foodTabletPlayer"));
