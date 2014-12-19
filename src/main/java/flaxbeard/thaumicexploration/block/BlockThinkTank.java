@@ -18,11 +18,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import thaumcraft.common.blocks.JarStepSound;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.thaumicexploration.ThaumicExploration;
 import flaxbeard.thaumicexploration.tile.TileEntityThinkTank;
+import thaumcraft.common.blocks.CustomStepSound;
 
 public class BlockThinkTank extends BlockContainer
 {
@@ -48,7 +48,7 @@ public class BlockThinkTank extends BlockContainer
     {
         super(Material.glass);
         this.isActive = par2;
-        setStepSound(new JarStepSound("jar", 1.0F, 1.0F));
+        setStepSound(new CustomStepSound("jar", 1.0F, 1.0F));
         setHardness(0.3F);
         setLightLevel(0.66F);
     }
