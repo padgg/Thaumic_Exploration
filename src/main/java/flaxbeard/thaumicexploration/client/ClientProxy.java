@@ -1,5 +1,6 @@
 package flaxbeard.thaumicexploration.client;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -177,7 +178,10 @@ public class ClientProxy extends CommonProxy
 		fb.motionZ = ((float)worldObj.rand.nextGaussian() * 0.03F);
         ParticleEngine.instance.addEffect(worldObj,fb);
     }
-    
-   
 
+
+	@Override
+	public boolean getIsReadyForWisp() {
+		return FMLClientHandler.instance().getClient().renderViewEntity!=null;
+	}
 }

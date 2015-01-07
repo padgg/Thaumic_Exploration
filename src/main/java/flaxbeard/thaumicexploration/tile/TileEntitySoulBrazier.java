@@ -1,11 +1,9 @@
 package flaxbeard.thaumicexploration.tile;
 
 import com.mojang.authlib.GameProfile;
-import cpw.mods.fml.client.FMLClientHandler;
 import flaxbeard.thaumicexploration.ThaumicExploration;
 import flaxbeard.thaumicexploration.chunkLoader.ITXChunkLoader;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
@@ -101,7 +99,7 @@ public class TileEntitySoulBrazier extends TileVisRelay  implements IEssentiaTra
     public void updateEntity() {
         super.updateEntity();
         this.count += 1;
-        if(!renderWisp  && FMLClientHandler.instance().getClient().renderViewEntity!=null)
+        if(!renderWisp  && ThaumicExploration.proxy.getIsReadyForWisp())
             renderWisp=true;
         if(this.count % 10==0 && renderWisp && active) {
             ThaumicExploration.proxy.spawnActiveBrazierParticle(worldObj,xCoord,yCoord,zCoord);
