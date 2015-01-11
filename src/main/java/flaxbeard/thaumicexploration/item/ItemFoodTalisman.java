@@ -1,7 +1,9 @@
 package flaxbeard.thaumicexploration.item;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.mojang.authlib.GameProfile;
 
@@ -20,6 +22,7 @@ import flaxbeard.thaumicexploration.misc.FakePlayerPotion;
 public class ItemFoodTalisman extends Item {
 
 	public static List<String> foodBlacklist=new ArrayList<String>();
+	public static Map<String,Boolean> foodCache=new HashMap<String, Boolean>();
 	public ItemFoodTalisman(int par1) {
 		super();
 		this.maxStackSize = 1;
@@ -112,10 +115,17 @@ public class ItemFoodTalisman extends Item {
 
 	private boolean isEdible(ItemStack food, EntityPlayer player) {
 		String foodName=food.getUnlocalizedName();
+
+		if(foodCache.containsKey(foodName.toLowerCase()))
+		{
+			return foodCache.get(foodName.toLowerCase());
+		}
 		for(String item:foodBlacklist)
 		{
-			if(item.equalsIgnoreCase(foodName))
+			if(item.equalsIgnoreCase(foodName)) {
+				foodCache.put(foodName.toLowerCase(),false);
 				return false;
+			}
 		}
 		if (food.getItem() instanceof ItemFood ) {
 
@@ -124,12 +134,14 @@ public class ItemFoodTalisman extends Item {
 				fakePlayer.setPosition(0.0F, 999.0F, 0.0F);
 				((ItemFood)food.getItem()).onEaten(food.copy(), player.worldObj, fakePlayer);
 				if (fakePlayer.getActivePotionEffects().size() > 0) {
+					foodCache.put(foodName.toLowerCase(),false);
 					return false;
 				}
 			}
-
+			foodCache.put(foodName.toLowerCase(),true);
 			return true;
 		}
+		foodCache.put(foodName.toLowerCase(),false);
 		return false;
 	}
 
