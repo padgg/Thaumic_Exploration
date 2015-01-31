@@ -32,7 +32,7 @@ import flaxbeard.thaumicexploration.block.BlockThinkTank;
 public class TileEntityThinkTank extends TileEntity implements ISidedInventory
 {
     private static final int[] slots_top = new int[] {0};
-    private static final int[] slots_bottom = new int[] {2, 1};
+    private static final int[] slots_bottom = new int[] {1};
     private static final int[] slots_sides = new int[] {1};
     
 
