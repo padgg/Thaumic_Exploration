@@ -61,15 +61,17 @@ public class BlockBoundJar extends BlockJar {
     @Override
     public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6)
     {
-		TileEntity te = par1World.getTileEntity(par2, par3, par4);
+		TileEntityBoundJar te = (TileEntityBoundJar) par1World.getTileEntity(par2, par3, par4);
 
-  		ItemStack drop = new ItemStack(ThaumicExploration.blankSeal, 1, 15-((TileEntityBoundJar)te).getSealColor());
+  		ItemStack drop = new ItemStack(ThaumicExploration.blankSeal, 1, ((TileEntityBoundJar)te).getSealColor());
+        ((TileEntityBoundJar) te).aspect=null;
+        ((TileEntityBoundJar) te).amount=0;
   		dropBlockAsItem(par1World, par2, par3, par4, drop);
 	}
     
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
     {
-      ArrayList<ItemStack> drops = new ArrayList();
+    /*  ArrayList<ItemStack> drops = new ArrayList();
       int md = world.getBlockMetadata(x, y, z);
         TileEntity te = world.getTileEntity(x, y, z);
         if ((te != null) && ((te instanceof TileJarFillable)))
@@ -85,7 +87,10 @@ public class BlockBoundJar extends BlockJar {
           drops.add(drop);
         }
         return drops;
-      
+      */
+        ArrayList<ItemStack> drops = new ArrayList();
+        drops.add(new ItemStack(ConfigBlocks.blockJar));
+        return drops;
     }
     
     

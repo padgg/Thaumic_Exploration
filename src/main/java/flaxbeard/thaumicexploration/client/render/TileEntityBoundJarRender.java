@@ -1,5 +1,8 @@
 package flaxbeard.thaumicexploration.client.render;
 
+import codechicken.lib.colour.Colour;
+import codechicken.lib.colour.ColourRGBA;
+import net.minecraft.item.ItemDye;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.entity.passive.EntitySheep;
@@ -28,8 +31,10 @@ public class TileEntityBoundJarRender extends TileJarRenderer {
 	    	GL11.glScalef(1.0F, -1.0F, -1.0F);
 	    	GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 	    	int j = ((TileEntityBoundJar) tile).getSealColor();
-	    	float colormod = 1.0F;
-			GL11.glColor4f(colormod * EntitySheep.fleeceColorTable[j][0], colormod * EntitySheep.fleeceColorTable[j][1], colormod * EntitySheep.fleeceColorTable[j][2], 0.9F);
+			float r = (float)(ItemDye.field_150922_c[j] >> 16 & 0xff) / 255F;
+			float g = (float)(ItemDye.field_150922_c[j]>> 8 & 0xff) / 255F;
+			float b = (float)(ItemDye.field_150922_c[j] & 0xff) / 255F;
+			GL11.glColor4f(r, g, b, 1.0F);
 			 int ticks = ((TileEntityBoundJar)tile).getAccessTicks();
 		        if (ticks > 0) {
 		        	double divisor = (80/6) + 0.0001;

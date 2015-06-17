@@ -6,11 +6,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.*;
 import flaxbeard.thaumicexploration.block.*;
 import flaxbeard.thaumicexploration.chunkLoader.ChunkLoaderCallback;
 import flaxbeard.thaumicexploration.commands.CommandAlterRate;
 import flaxbeard.thaumicexploration.commands.CommandCheckWarp;
+import flaxbeard.thaumicexploration.item.*;
 import flaxbeard.thaumicexploration.tile.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -30,6 +31,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.event.world.ChunkDataEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -51,9 +53,6 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
@@ -71,16 +70,6 @@ import flaxbeard.thaumicexploration.event.TXEventHandler;
 import flaxbeard.thaumicexploration.event.TXTickHandler;
 import flaxbeard.thaumicexploration.gui.TXGuiHandler;
 import flaxbeard.thaumicexploration.integration.TTIntegration;
-import flaxbeard.thaumicexploration.item.ItemBauble;
-import flaxbeard.thaumicexploration.item.ItemBaubleDiscountRing;
-import flaxbeard.thaumicexploration.item.ItemBlankSeal;
-import flaxbeard.thaumicexploration.item.ItemBrain;
-import flaxbeard.thaumicexploration.item.ItemChestSeal;
-import flaxbeard.thaumicexploration.item.ItemChestSealLinked;
-import flaxbeard.thaumicexploration.item.ItemFoodTalisman;
-import flaxbeard.thaumicexploration.item.ItemStabilizerBelt;
-import flaxbeard.thaumicexploration.item.ItemTXArmorSpecial;
-import flaxbeard.thaumicexploration.item.ItemTaintSeedFood;
 import flaxbeard.thaumicexploration.misc.TXPotion;
 import flaxbeard.thaumicexploration.misc.TXTaintPotion;
 import flaxbeard.thaumicexploration.research.ModRecipes;
@@ -408,10 +397,8 @@ public class ThaumicExploration {
 		GameRegistry.registerItem(chestSeal, "chestSeal");
 		chestSealLinked = (new ItemChestSealLinked(chestSealLinkedID).setTextureName("thaumicexploration:sealChest").setUnlocalizedName("thaumicexploration:chestSeal"));
 		GameRegistry.registerItem(chestSealLinked, "chestSealLinked");
-		jarSeal = (new ItemChestSeal(jarSealID).setCreativeTab(tab).setTextureName("thaumicexploration:sealJar").setUnlocalizedName("thaumicexploration:jarSeal"));
+		jarSeal = (new ItemJarSeal().setCreativeTab(tab).setTextureName("thaumicexploration:sealJar").setUnlocalizedName("thaumicexploration:jarSeal"));
 		GameRegistry.registerItem(jarSeal, "jarSeal");
-		jarSealLinked = (new ItemChestSealLinked(jarSealLinkedID).setTextureName("thaumicexploration:sealJar").setUnlocalizedName("thaumicexploration:jarSeal"));
-		GameRegistry.registerItem(jarSealLinked, "jarSealLinked");
 		charmNoTaint = new Item().setUnlocalizedName("thaumicexploration:dreamcatcher").setCreativeTab(tab).setTextureName("thaumicexploration:dreamcatcher");
 		GameRegistry.registerItem(charmNoTaint, "charmNoTaint");
 		charmTaint = new Item().setUnlocalizedName("thaumicexploration:ringTaint").setCreativeTab(tab).setTextureName("thaumicexploration:taintRing");
@@ -474,6 +461,7 @@ public class ThaumicExploration {
 		
 		//EventHandler
 		MinecraftForge.EVENT_BUS.register(new TXEventHandler());
+		FMLCommonHandler.instance().bus().register(new TXEventHandler());
 
 		//Tiles
 		GameRegistry.registerTileEntity(TileEntityFloatyCandle.class, "tileEntityFloatyCandle");
@@ -514,6 +502,10 @@ public class ThaumicExploration {
 		enchantmentDisarm = new EnchantmentDisarm(enchantmentDisarmID, 1);
 		if (Loader.isModLoaded("ThaumicTinkerer")) {
 			TTIntegration.registerEnchants();
+		}
+		if(Loader.isModLoaded("Waila"))
+		{
+			FMLInterModComms.sendMessage("Waila","register","flaxbeard.thaumicexploration.interop.WailaConfig.callbackRegister");
 		}
 	    EntityRegistry.registerModEntity(EntityTaintacleMinion.class, "TaintacleMinion", 0, ThaumicExploration.instance, 64, 3, false);
 //		enhancedHelmetRunic = new ItemEnhancedRunicArmor(1, enhancedHelmetRunicID, ThaumcraftApi.armorMatSpecial, 0, 0).setUnlocalizedName("thaumicexploration:enhancedHelmetRunic").setCreativeTab(tab);

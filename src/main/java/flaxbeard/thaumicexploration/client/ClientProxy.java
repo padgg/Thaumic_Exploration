@@ -48,8 +48,14 @@ import flaxbeard.thaumicexploration.tile.TileEntityTrashJar;
 
 public class ClientProxy extends CommonProxy
 {
-	
-    @Override
+
+
+	@Override
+	public boolean isServer() {
+		return false;
+	}
+
+	@Override
     public void registerRenderers()
     {
     	 ThaumicExploration.channel.register(new TXClientPacketHandler());

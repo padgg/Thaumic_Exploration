@@ -1,5 +1,7 @@
 package flaxbeard.thaumicexploration.common;
 
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.DimensionManager;
 import thaumcraft.api.aspects.Aspect;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
@@ -78,5 +80,15 @@ public class CommonProxy
 		// TODO Auto-generated method stub
 		
 	}
-	
+
+
+	public boolean isServer()
+	{
+		return true;
+	}
+
+	public World getOverworld()
+	{
+		return DimensionManager.getWorld(0);
+	}
 }

@@ -181,9 +181,9 @@ public final class ModResearch {
         ResourceLocation chestSeal = new ResourceLocation("thaumicexploration:textures/tabs/chestSeals.png");
         ResourceLocation jarSeal = new ResourceLocation("thaumicexploration:textures/tabs/jarSeals.png");
         if (ThaumicExploration.allowBoundInventories) {
-        	research = new TXResearchItem("CHESTSEAL", "TX", new AspectList().add(Aspect.ELDRITCH, 5).add(Aspect.TRAP, 8).add(Aspect.TRAVEL, 5).add(Aspect.VOID,3), -9, -3, 2, chestSeal).setConcealed().setParentsHidden("MIRROR","TALLOW").registerResearchItem();
-        	research.setPages(new ResearchPage("1"),recipePage("BLANKSEAL"),cruciblePage("CHESTSEAL"));
-        	research = new TXResearchItem("JARSEAL", "TX", new AspectList().add(Aspect.ELDRITCH, 5).add(Aspect.TRAP, 8).add(Aspect.MAGIC, 5).add(Aspect.TRAVEL,5), -7, -2, 1, jarSeal).setConcealed().setParents("CHESTSEAL").registerResearchItem().setSecondary();
+        	//research = new TXResearchItem("CHESTSEAL", "TX", new AspectList().add(Aspect.ELDRITCH, 5).add(Aspect.TRAP, 8).add(Aspect.TRAVEL, 5).add(Aspect.VOID,3), -9, -3, 2, chestSeal).setConcealed().setParentsHidden("MIRROR","TALLOW").registerResearchItem();
+        	//research.setPages(new ResearchPage("1"),recipePage("BLANKSEAL"),cruciblePage("CHESTSEAL"));
+        	research = new TXResearchItem("JARSEAL", "TX", new AspectList().add(Aspect.ELDRITCH, 5).add(Aspect.TRAP, 8).add(Aspect.MAGIC, 5).add(Aspect.TRAVEL,5), -7, -2, 1, jarSeal).setConcealed().registerResearchItem().setSecondary();
         	research.setPages(new ResearchPage("1"),cruciblePage("JARSEAL"));
         }
     	research = new FauxResearchItem("TXJARVOID","TX","JARVOID","ALCHEMY",7,-10,getOriginalItem("JARVOID","ALCHEMY")).registerResearchItem();

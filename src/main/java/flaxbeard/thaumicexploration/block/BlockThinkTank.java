@@ -22,7 +22,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.thaumicexploration.ThaumicExploration;
 import flaxbeard.thaumicexploration.tile.TileEntityThinkTank;
-import thaumcraft.common.blocks.CustomStepSound;
+import thaumcraft.common.blocks.JarStepSound;
+
 
 public class BlockThinkTank extends BlockContainer
 {
@@ -48,7 +49,7 @@ public class BlockThinkTank extends BlockContainer
     {
         super(Material.glass);
         this.isActive = par2;
-        setStepSound(new CustomStepSound("jar", 1.0F, 1.0F));
+        setStepSound(new JarStepSound("jar",1.0F,1.0F));
         setHardness(0.3F);
         setLightLevel(0.66F);
     }

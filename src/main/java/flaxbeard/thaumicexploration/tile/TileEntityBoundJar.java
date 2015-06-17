@@ -1,20 +1,23 @@
 package flaxbeard.thaumicexploration.tile;
 
+import flaxbeard.thaumicexploration.common.StringID;
+import flaxbeard.thaumicexploration.data.BoundJarNetworkManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.tiles.TileJarFillable;
-import flaxbeard.thaumicexploration.data.BoundJarWorldData;
 
 public class TileEntityBoundJar extends TileJarFillable {
-	public BoundJarWorldData myJarData;
     public int accessTicks = 0;
-    public int id = 0;
     
     public int clientColor = 0;
+    public int colour;
+    public AspectList aspectList=new AspectList();
+    public String networkName= StringID.getName();
     
     public int getMinimumSuction()
     {
@@ -55,7 +58,7 @@ public class TileEntityBoundJar extends TileJarFillable {
         	access.setString("aspect", this.aspect.getTag());
         }
         access.setInteger("color", this.getSealColor());
-        
+        access.setString("network",this.networkName);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
     }
     
@@ -63,14 +66,21 @@ public class TileEntityBoundJar extends TileJarFillable {
 		return this.accessTicks;
 		
 	}
-    
+
+
+    @Override
+    public void markDirty() {
+        super.markDirty();
+        aspectList.remove(aspect);
+        aspectList.add(aspect,amount);
+        AspectList oldAspects=BoundJarNetworkManager.getAspect(networkName);
+        oldAspects.remove(oldAspects.getAspects()[0]);
+        oldAspects.add(aspect,amount);
+        BoundJarNetworkManager.markDirty(networkName);
+    }
+
     public void setColor(int color) {
-    	if (this.id > 0) {
-    		myJarData = BoundJarWorldData.get(this.worldObj, "jar" + id, 0);
-        }
-        if (myJarData != null) {
-        	myJarData.setSealColor(color);
-        }
+        colour=color;
     }
 
     @Override
@@ -84,7 +94,7 @@ public class TileEntityBoundJar extends TileJarFillable {
     	}
     	this.setColor(access.getInteger("color"));
     	this.clientColor = access.getInteger("color");
-    	
+    	this.networkName=access.getString("network");
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
     
@@ -93,10 +103,8 @@ public class TileEntityBoundJar extends TileJarFillable {
       this.aspect = Aspect.getAspect(nbttagcompound.getString("Aspect"));
       this.amount = nbttagcompound.getShort("Amount");
       this.facing = nbttagcompound.getByte("facing");
-      if (nbttagcompound.hasKey("jarID"))
-      {
-          this.id = nbttagcompound.getInteger("jarID");
-      }
+      this.networkName=nbttagcompound.getString("network");
+        this.colour=nbttagcompound.getInteger("colour");
     }
     
     public void writeCustomNBT(NBTTagCompound nbttagcompound)
@@ -106,25 +114,18 @@ public class TileEntityBoundJar extends TileJarFillable {
       }
       nbttagcompound.setShort("Amount", (short)this.amount);
       nbttagcompound.setByte("facing", (byte)this.facing);
-      nbttagcompound.setInteger("jarID", this.id);
+      nbttagcompound.setString("network",this.networkName);
+      nbttagcompound.setInteger("colour",getSealColor());
     }
     
 	public int getSealColor() {
-		if (this.worldObj.isRemote) {
-			return this.clientColor;
-		}
-		if (myJarData == null) {
-			myJarData = BoundJarWorldData.get(this.worldObj, "jar" + id, 0);
-		}
-		return this.myJarData.getSealColor();
+		return colour;
 	}
 
 	@Override
 	public int addToContainer(Aspect tt, int am) {
 		this.updateEntity();
-		if (myJarData == null) {
-			myJarData = BoundJarWorldData.get(this.worldObj, "jar" + id, 0);
-		}
+
 	    if (am == 0) {
 	        return am;
 	    }
@@ -134,11 +135,9 @@ public class TileEntityBoundJar extends TileJarFillable {
 	      int added = Math.min(am, this.maxAmount - this.amount);
 	      this.amount += added;
 	      am -= added;
-	      if (!this.worldObj.isRemote) {
-	    	  myJarData.updateJarContents(tt, this.amount);
-	      }
 	    }
     	this.accessTicks = 80;
+        this.markDirty();
 		this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 		return am;
 	}
@@ -156,10 +155,8 @@ public class TileEntityBoundJar extends TileJarFillable {
 				this.amount = 0;
 			}
         	this.accessTicks = 80;
+            this.markDirty();
 			this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-			if (!this.worldObj.isRemote) {
-				myJarData.updateJarContents(tt, this.amount);
-			}
 			return true;
 	    }
 	    return false;
@@ -167,36 +164,42 @@ public class TileEntityBoundJar extends TileJarFillable {
 	
     public void updateEntity()
     {
+
+        aspectList= BoundJarNetworkManager.getAspect(networkName).copy();
+
     	if (!this.worldObj.isRemote) {
-            if (this.accessTicks > 0 && !this.worldObj.isRemote) {
+            if (this.accessTicks > 0) {
             	--this.accessTicks;
             	worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             }
-	    	if (myJarData == null) {
-				myJarData = BoundJarWorldData.get(this.worldObj, "jar" + id, 0);
-			}
+
 	    	
-			if (this.amount != myJarData.getJarAmount()) {
-				this.amount = myJarData.getJarAmount();
+                if(aspect!=aspectList.getAspects()[0]) {
+                    this.accessTicks = 80;
+                    aspect = aspectList.getAspects()[0];
+                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+
+                }
+
+            if(amount!=aspectList.getAmount(aspect))
+			{
             	this.accessTicks = 80;
+                amount=aspectList.getAmount(aspect);
             	worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-			}
-			if (this.aspect != myJarData.getJarAspect()) {
-				this.aspect = myJarData.getJarAspect();
-            	this.accessTicks = 80;
-            	worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+
 			}
 	
 			this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
     	}
+
+
     	super.updateEntity();
     }
 
-	public void emptyJar() {
-		if (!this.worldObj.isRemote) {
-			this.myJarData.updateJarContents(null, 0);
-		}
-	}
-	
-	
+    @Override
+    public void setAspects(AspectList aspects) {
+        super.setAspects(aspects);
+        this.markDirty();
+        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+    }
 }

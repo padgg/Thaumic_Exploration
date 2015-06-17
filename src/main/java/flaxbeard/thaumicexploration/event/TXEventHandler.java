@@ -1,6 +1,9 @@
 package flaxbeard.thaumicexploration.event;
 
 import baubles.api.BaublesApi;
+import codechicken.lib.packet.PacketCustom;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
+import flaxbeard.thaumicexploration.data.BoundJarNetworkManager;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
@@ -9,6 +12,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
@@ -33,6 +37,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -48,6 +53,7 @@ import net.minecraftforge.event.world.WorldEvent;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.lwjgl.opengl.GL11;
 
+import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.damagesource.DamageSourceThaumcraft;
 import thaumcraft.api.entities.ITaintedMob;
 import thaumcraft.api.wands.WandRod;
@@ -836,31 +842,7 @@ public class TXEventHandler {
 					}
 				}
 			}
-			else if (event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z) == ThaumicExploration.boundJar) {
-				World world = event.entityPlayer.worldObj;
-				if (event.entityPlayer.inventory.getCurrentItem() != null){ 
-					if (event.entityPlayer.inventory.getCurrentItem().getItem() == ThaumicExploration.jarSeal ) {
-						int color = ((TileEntityBoundJar) world.getTileEntity(event.x, event.y, event.z)).getSealColor();		
-						type = 6;
-						if (15-(event.entityPlayer.inventory.getCurrentItem().getItemDamage()) == color) {
-							int nextID = ((TileEntityBoundJar) world.getTileEntity(event.x, event.y, event.z)).id;
-							ItemStack linkedSeal = new ItemStack(ThaumicExploration.jarSealLinked, 1, event.entityPlayer.inventory.getCurrentItem().getItemDamage());
-							NBTTagCompound tag = new NBTTagCompound();
-							tag.setInteger("ID", nextID);
-							tag.setInteger("x", event.x);
-							tag.setInteger("y", event.y);
-							tag.setInteger("z", event.z);
-							tag.setInteger("dim", world.provider.dimensionId);
-							linkedSeal.setTagCompound(tag);
 
-							event.entityPlayer.inventory.addItemStackToInventory(linkedSeal);
-							if (!event.entityPlayer.capabilities.isCreativeMode)
-								event.entityPlayer.inventory.decrStackSize(event.entityPlayer.inventory.currentItem, 1);
-						}
-						event.setCanceled(true);
-					}
-				}
-			}
 		}
 		
 		
@@ -891,6 +873,15 @@ public class TXEventHandler {
 		}
 
 		
+	}
+
+	@SubscribeEvent
+	public void playerLogin(PlayerEvent.PlayerLoggedInEvent event)
+	{
+		for(Map.Entry<String,AspectList> entry: BoundJarNetworkManager.getData().networks.entrySet())
+		{
+			PacketCustom.sendToPlayer(BoundJarNetworkManager.getPacket(new Tuple(entry.getKey(),entry.getValue())),event.player);
+		}
 	}
 	
 }
