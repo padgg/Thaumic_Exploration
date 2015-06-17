@@ -29,6 +29,7 @@ public class ItemFoodTalisman extends Item {
 		//this.setMaxDamage(100);
 		foodBlacklist.add(ConfigItems.itemManaBean.getUnlocalizedName());
 		foodBlacklist.add(ConfigItems.itemZombieBrain.getUnlocalizedName());
+		foodBlacklist.add("item.foodstuff.0.name");
 	}
 
 
