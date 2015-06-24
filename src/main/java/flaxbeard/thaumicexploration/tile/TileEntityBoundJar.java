@@ -72,11 +72,14 @@ public class TileEntityBoundJar extends TileJarFillable {
     public void markDirty() {
         super.markDirty();
         aspectList.remove(aspect);
-        aspectList.add(aspect,amount);
-        AspectList oldAspects=BoundJarNetworkManager.getAspect(networkName);
-        oldAspects.remove(oldAspects.getAspects()[0]);
-        oldAspects.add(aspect,amount);
-        BoundJarNetworkManager.markDirty(networkName);
+
+            aspectList.add(aspect, amount);
+            AspectList oldAspects = BoundJarNetworkManager.getAspect(networkName);
+            oldAspects.remove(oldAspects.getAspects()[0]);
+            oldAspects.add(aspect, amount);
+        if(!worldObj.isRemote) {
+            BoundJarNetworkManager.markDirty(networkName);
+        }
     }
 
     public void setColor(int color) {
