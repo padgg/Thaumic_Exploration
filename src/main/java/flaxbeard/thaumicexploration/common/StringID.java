@@ -2,10 +2,11 @@ package flaxbeard.thaumicexploration.common;
 
 import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Stream;
 
 /**
  * Created by Katrina on 07/06/2015.
@@ -16,8 +17,9 @@ public static String getName()
 {
     String Output="";
     try {
-        List<String> adjectivesFile= FileUtils.readLines(new File(StringID.class.getClassLoader().getResource("assets/thaumicexploration/misc/adjectives").getFile()));
-        List<String> animalsFile= FileUtils.readLines(new File(StringID.class.getClassLoader().getResource("assets/thaumicexploration/misc/animals").getFile()));
+
+        List<String> adjectivesFile=getList("assets/thaumicexploration/misc/adjectives");
+        List<String> animalsFile= getList("assets/thaumicexploration/misc/animals");
 
         Random rand=new Random();
 
@@ -37,4 +39,20 @@ public static String getName()
 
     return Output;
 }
+
+
+    public static List<String> getList(String name) throws IOException {
+        InputStream strm=StringID.class.getClassLoader().getResourceAsStream(name);
+        List<String> strings=new ArrayList<String>();
+
+        BufferedReader reader=new BufferedReader(new InputStreamReader(strm));
+        String StrArr = null;
+        String str=reader.readLine();
+        while(str!=null)
+        {
+            strings.add(str);
+            str=reader.readLine();
+        }
+        return strings;
+    }
 }
