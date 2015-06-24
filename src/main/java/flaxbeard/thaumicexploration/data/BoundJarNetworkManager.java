@@ -31,7 +31,7 @@ public class BoundJarNetworkManager {
     }
 
 
-    private static  BoundJarNetworkData data=null;
+    private static  BoundJarNetworkData data=new BoundJarNetworkData();
 
     public static BoundJarNetworkData getData()
     {
