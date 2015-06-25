@@ -4,6 +4,7 @@ import flaxbeard.thaumicexploration.ThaumicExploration;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -21,7 +22,7 @@ public class TileEntityEverburnUrn extends TileVisRelay implements IFluidTank,IF
 
     private int ticks = 0;
     private int drainTicks = 0;
-    private float ignisVis;
+    public float ignisVis;
     private int dX;
     private int dY;
     private int dZ;
@@ -31,8 +32,20 @@ public class TileEntityEverburnUrn extends TileVisRelay implements IFluidTank,IF
     private int range = 3;
     private int yRange = 2;
     private EntityPlayer burningPlayer;
-    private static int CONVERSION_FACTOR=250;
+    public static int CONVERSION_FACTOR=250;
 
+
+    @Override
+    public void readCustomNBT(NBTTagCompound nbttagcompound) {
+        super.readCustomNBT(nbttagcompound);
+        ignisVis=nbttagcompound.getFloat("ignisVis");
+    }
+
+    @Override
+    public void writeCustomNBT(NBTTagCompound nbttagcompound) {
+        super.writeCustomNBT(nbttagcompound);
+        nbttagcompound.setFloat("ignisVis",ignisVis);
+    }
 
     @Override
     public FluidStack getFluid() {
@@ -71,12 +84,11 @@ public class TileEntityEverburnUrn extends TileVisRelay implements IFluidTank,IF
         if (getFluidAmount() < drained) {
             drained = getFluidAmount();
         }
-
+        if(doDrain) {
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            ignisVis=ignisVis-(drained/250);
+        }
         FluidStack stack = new FluidStack(FluidRegistry.LAVA, (int)drained);
-        System.out.println(drained/CONVERSION_FACTOR);
-        System.out.println("Drained Before: "+ignisVis);
-        ignisVis-=drained/CONVERSION_FACTOR;
-        System.out.println("Drained after: "+ignisVis);
         return stack;
     }
 
@@ -93,7 +105,8 @@ public class TileEntityEverburnUrn extends TileVisRelay implements IFluidTank,IF
         if (!resource.isFluidEqual(new FluidStack(FluidRegistry.LAVA, 1)) || !(from == ForgeDirection.UP)) {
             return null;
         }
-
+        if(doDrain)
+            worldObj.markBlockForUpdate(xCoord,yCoord,zCoord);
         return this.drain(resource.amount, doDrain);
 
     }
@@ -102,6 +115,8 @@ public class TileEntityEverburnUrn extends TileVisRelay implements IFluidTank,IF
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
         // TODO Auto-generated method stub
         if (from == ForgeDirection.UP) {
+            if(doDrain)
+                worldObj.markBlockForUpdate(xCoord,yCoord,zCoord);
             return this.drain(maxDrain, doDrain);
         } else {
             FluidStack stack = new FluidStack(FluidRegistry.LAVA, 0);
@@ -134,7 +149,7 @@ public class TileEntityEverburnUrn extends TileVisRelay implements IFluidTank,IF
         if(this.ticks==10) {
             if (this.ignisVis < 16) {
                 ignisVis += this.consumeVis(Aspect.FIRE, 1);
-
+                worldObj.markBlockForUpdate(xCoord,yCoord,zCoord);
             }
             ticks=0;
         }

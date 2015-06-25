@@ -127,31 +127,30 @@ public class BlockEverburnUrn extends BlockContainer {
     public boolean onBlockActivated(World world, int par2, int par3, int par4, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9)
     {
 
-		
+		TileEntityEverburnUrn entity= (TileEntityEverburnUrn) world.getTileEntity(par2,par3,par4);
+
 			if (entityPlayer.inventory.getCurrentItem() != null){ 
-				if (entityPlayer.inventory.getCurrentItem().getItem() == Items.bucket) {
-					entityPlayer.inventory.decrStackSize(entityPlayer.inventory.currentItem, 1);
-					if (!entityPlayer.inventory.addItemStackToInventory(new ItemStack(Items.lava_bucket, 1))) {
-						entityPlayer.dropItem(Items.lava_bucket, 1);
-					}
-		            world.playSoundAtEntity(entityPlayer, "liquid.swim", 0.5F, 1.0F);
-				}
-				else if (FluidContainerRegistry.isEmptyContainer(entityPlayer.inventory.getCurrentItem())) {
+				if (FluidContainerRegistry.isEmptyContainer(entityPlayer.inventory.getCurrentItem())) {
 					ItemStack newStack = entityPlayer.inventory.getCurrentItem();
-					entityPlayer.inventory.decrStackSize(entityPlayer.inventory.currentItem, 1);
-					if (!entityPlayer.inventory.addItemStackToInventory(FluidContainerRegistry.fillFluidContainer(new FluidStack(FluidRegistry.LAVA, 1000), newStack))) {
-						entityPlayer.dropItem(FluidContainerRegistry.fillFluidContainer(new FluidStack(FluidRegistry.LAVA, 1000), newStack).getItem(),1);
-					}
-					world.playSoundAtEntity(entityPlayer, "liquid.swim", 0.5F, 1.0F);
+                    ItemStack filledStack=FluidContainerRegistry.fillFluidContainer(entity.getFluid(), newStack);
+                    if(filledStack!=null) {
+                        entityPlayer.inventory.decrStackSize(entityPlayer.inventory.currentItem, 1);
+                        entity.drain(FluidContainerRegistry.getFluidForFilledItem(filledStack).amount,true);
+                        if (!entityPlayer.inventory.addItemStackToInventory(filledStack)) {
+                            entityPlayer.dropPlayerItemWithRandomChoice(filledStack, false);
+                        }
+                        world.playSoundAtEntity(entityPlayer, "liquid.swim", 0.5F, 1.0F);
+                        world.markBlockForUpdate(par2,par3,par4);
+                    }
 				}
 				else if (entityPlayer.inventory.getCurrentItem().getItem() instanceof IFluidContainerItem) {
-					ItemStack newStack = new ItemStack(entityPlayer.inventory.getCurrentItem().getItem(),1);
-					entityPlayer.inventory.decrStackSize(entityPlayer.inventory.currentItem, 1);
-					((IFluidContainerItem)newStack.getItem()).fill(newStack, new FluidStack(FluidRegistry.LAVA, 1000), true);
-					if (!entityPlayer.inventory.addItemStackToInventory(newStack)) {
-						entityPlayer.dropItem(newStack.getItem(),newStack.stackSize);
-					}
-					world.playSoundAtEntity(entityPlayer, "liquid.swim", 0.5F, 1.0F);
+					IFluidContainerItem itm= (IFluidContainerItem) entityPlayer.inventory.getCurrentItem().getItem();
+                    int fill=itm.fill(entityPlayer.inventory.getCurrentItem(),entity.getFluid(),true);
+                    if(fill>0) {
+                        entity.drain(fill,true);
+                        world.playSoundAtEntity(entityPlayer, "liquid.swim", 0.5F, 1.0F);
+                        world.markBlockForUpdate(par2,par3,par4);
+                    }
 				}
 			}
 		

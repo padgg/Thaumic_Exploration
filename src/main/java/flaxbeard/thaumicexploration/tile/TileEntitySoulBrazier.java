@@ -45,7 +45,7 @@ public class TileEntitySoulBrazier extends TileVisRelay  implements IEssentiaTra
     private int ticks=0;
     private static int EssentiaCapacity=16;
     private static int VisCapacity=16;
-    public static int EssentiaRate=3;
+    public static int EssentiaRate=1;
     public static int VisRate=3;
     public ForgeChunkManager.Ticket heldChunk;
     public static boolean renderWisp=false;
@@ -76,6 +76,12 @@ public class TileEntitySoulBrazier extends TileVisRelay  implements IEssentiaTra
     public boolean setActive(EntityPlayer player)
     {
         if(!worldObj.isRemote) {
+            int playerWarp=Thaumcraft.proxy.getPlayerKnowledge().getWarpPerm(owner.getName());
+            if(playerWarp<=0)
+            {
+                player.addChatComponentMessage(new ChatComponentTranslation("soulbrazier.noWarp"));
+                return false;
+            }
             if (!EntityPlayer.func_146094_a(player.getGameProfile()).equals(owner.getId())) {
 
                     player.addChatComponentMessage(new ChatComponentTranslation("soulbrazier.invalidplayer"));
@@ -88,7 +94,7 @@ public class TileEntitySoulBrazier extends TileVisRelay  implements IEssentiaTra
                 return false;
             }
             active = true;
-            storedWarp += Thaumcraft.proxy.getPlayerKnowledge().getWarpPerm(owner.getName());
+            storedWarp += playerWarp;
             Thaumcraft.proxy.getPlayerKnowledge().setWarpPerm(owner.getName(), 0);
             worldObj.markBlockForUpdate(xCoord,yCoord,zCoord);
             return true;
@@ -112,7 +118,7 @@ public class TileEntitySoulBrazier extends TileVisRelay  implements IEssentiaTra
         if(active) {
             if(heldChunk==null)
                 addTicket();
-            if (this.count % 15 == 0)
+            if (this.count % 60 == 0)
                 spendPower();
             if (!checkPower()) {
                 active = false;

@@ -23,6 +23,7 @@ public class BlockSoulBrazier extends BlockContainer {
 
     public BlockSoulBrazier() {
         super(Material.rock);
+        setBlockTextureName("thaumicexploration:soulBrazier");
     }
 
     public boolean isOpaqueCube()

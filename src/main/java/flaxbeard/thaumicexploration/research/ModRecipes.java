@@ -222,7 +222,12 @@ public final class ModRecipes {
 				new ItemStack(Items.brick),new ItemStack(Items.water_bucket), 
 				new ItemStack(Items.brick),new ItemStack(Items.water_bucket), 
 				new ItemStack(Items.brick) );
-		
+		registerResearchItemI("BURN", new ItemStack(ThaumicExploration.everburnUrn), 2,
+				new AspectList().add(Aspect.FIRE, 20).add(Aspect.VOID, 8).add(Aspect.MAGIC, 4),
+				new ItemStack(Items.flower_pot),new ItemStack(Items.lava_bucket),
+				new ItemStack(Items.brick),new ItemStack(Items.lava_bucket),
+				new ItemStack(Items.brick),new ItemStack(Items.lava_bucket),
+				new ItemStack(Items.brick) );
 		registerResearchItemI("NECROINFUSION", new ItemStack(ThaumicExploration.itemAltar), 7, 
 				new AspectList().add(Aspect.MAGIC, 32).add(Aspect.DEATH, 16).add(Aspect.UNDEAD, 16).add(Aspect.CRAFT, 16), 
 				new ItemStack(ConfigBlocks.blockStoneDevice,1,1),new ItemStack(Blocks.netherrack), 

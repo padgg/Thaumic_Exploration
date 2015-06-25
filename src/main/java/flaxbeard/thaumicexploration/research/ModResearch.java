@@ -74,6 +74,10 @@ public final class ModResearch {
 		        {
 		        	research.setPages(new ResearchPage("1"), infusionPage("URN") );
 		        }
+
+            research = new TXResearchItem("BURN", "TX", new AspectList().add(Aspect.MAGIC, 4).add(Aspect.VOID, 2).add(Aspect.FIRE, 5), 4,-11 , 1, new ItemStack(ThaumicExploration.everburnUrn)).setParents("URN").setParentsHidden("ARCANEEAR").setConcealed().registerResearchItem();
+            research.setPages(new ResearchPage("1"), infusionPage("BURN") );
+
         }
         research = new FauxResearchItem("TXHOVERHARNESS","TX","HOVERHARNESS","ARTIFICE",2,-12,getOriginalItem("HOVERHARNESS","ARTIFICE")).registerResearchItem();
         research = new TXResearchItem("STABILIZERBELT", "TX", new AspectList().add(Aspect.ORDER, 4).add(Aspect.EARTH, 4).add(Aspect.TRAVEL, 2), 1,-10 , 1, new ItemStack(ThaumicExploration.stabilizerBelt)).setParents("INFUSION","TXINFUSION","HOVERHARNESS","TXHOVERHARNESS").setConcealed().registerResearchItem();
