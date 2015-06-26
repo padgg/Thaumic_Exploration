@@ -113,12 +113,12 @@ processResources
                 exclude 'mcmod.info'
             }
         }
-//jar {
-//    manifest {
-//        attributes 'FMLCorePlugin': 'vazkii.tinkerer.preloader.ThaumicTLoaderContainer'
-//        attributes 'FMLCorePluginContainsFMLMod': 'true'
-//    }
-//}
+jar {
+    manifest {
+        attributes 'FMLCorePlugin': 'FMLCorePlugin: codechicken.core.launch.DepLoader'
+        attributes 'FMLCorePluginContainsFMLMod': 'true'
+    }
+}
 task deobfJar(type: Jar) {
     from sourceSets.main.output
     classifier = 'dev'
