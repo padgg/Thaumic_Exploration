@@ -129,18 +129,26 @@ public class ItemFoodTalisman extends Item {
 			}
 		}
 		if (food.getItem() instanceof ItemFood ) {
+			try {
 
-			for (int i = 1; i < 25; i++) {
-				EntityPlayer fakePlayer = new FakePlayerPotion(player.worldObj, new GameProfile(null, "foodTabletPlayer"));
-				fakePlayer.setPosition(0.0F, 999.0F, 0.0F);
-				((ItemFood)food.getItem()).onEaten(food.copy(), player.worldObj, fakePlayer);
-				if (fakePlayer.getActivePotionEffects().size() > 0) {
-					foodCache.put(foodName.toLowerCase(),false);
-					return false;
+
+				for (int i = 1; i < 25; i++) {
+					EntityPlayer fakePlayer = new FakePlayerPotion(player.worldObj, new GameProfile(null, "foodTabletPlayer"));
+					fakePlayer.setPosition(0.0F, 999.0F, 0.0F);
+					((ItemFood) food.getItem()).onEaten(food.copy(), player.worldObj, fakePlayer);
+					if (fakePlayer.getActivePotionEffects().size() > 0) {
+						foodCache.put(foodName.toLowerCase(), false);
+						return false;
+					}
 				}
+				foodCache.put(foodName.toLowerCase(), true);
+				return true;
 			}
-			foodCache.put(foodName.toLowerCase(),true);
-			return true;
+			catch(Exception e)
+			{
+				foodCache.put(foodName.toLowerCase(), false);
+				return false;
+			}
 		}
 		foodCache.put(foodName.toLowerCase(),false);
 		return false;
