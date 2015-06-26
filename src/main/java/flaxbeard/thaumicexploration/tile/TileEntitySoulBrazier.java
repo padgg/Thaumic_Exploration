@@ -122,11 +122,14 @@ public class TileEntitySoulBrazier extends TileVisRelay  implements IEssentiaTra
                 spendPower();
             if (!checkPower()) {
                 active = false;
+
                 if(!worldObj.isRemote) {
                     int temp = Thaumcraft.proxy.getPlayerKnowledge().getWarpPerm(owner.getName()) + storedWarp;
                     Thaumcraft.proxy.getPlayerKnowledge().setWarpPerm(owner.getName(), temp);
                 }
                 storedWarp=0;
+                ForgeChunkManager.unforceChunk(this.heldChunk, new ChunkCoordIntPair(this.xCoord >> 4, this.zCoord >> 4));
+                this.heldChunk=null;
                 worldObj.markBlockForUpdate(xCoord,yCoord,zCoord);
             }
 
