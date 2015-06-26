@@ -115,7 +115,7 @@ processResources
         }
 jar {
     manifest {
-        attributes 'FMLCorePlugin': 'FMLCorePlugin: codechicken.core.launch.DepLoader'
+        attributes 'FMLCorePlugin': 'codechicken.core.launch.DepLoader'
         attributes 'FMLCorePluginContainsFMLMod': 'true'
     }
 }
