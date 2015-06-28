@@ -73,7 +73,7 @@ public class ItemFoodTalisman extends Item {
 					if (isEdible(food, player)) {
 						float sat;
 						float heal;
-						if(Loader.isModLoaded("HungerOverhaul")) {
+						if(Loader.isModLoaded("AppleCore")) {
 							sat= AppleCoreInterop.getSaturation(food)*2;
 							heal=AppleCoreInterop.getHeal(food);
 						}
@@ -108,9 +108,9 @@ public class ItemFoodTalisman extends Item {
 					finalSat = sat - (20 - player.getFoodStats().getFoodLevel());
 					sat = 20 - player.getFoodStats().getFoodLevel();
 				}
-				if(Loader.isModLoaded("HungerOverhaul"))
+				if(Loader.isModLoaded("AppleCore"))
 				{
-					AppleCoreInterop.setHunger((int)sat,player);
+					AppleCoreInterop.setHunger((int) sat, player);
 				}
 				else
 					ObfuscationReflectionHelper.setPrivateValue(FoodStats.class, player.getFoodStats(),  (int) (player.getFoodStats().getFoodLevel() + sat), "field_75127_a","foodLevel");
@@ -124,9 +124,9 @@ public class ItemFoodTalisman extends Item {
 					finalSat = sat - (player.getFoodStats().getFoodLevel() - player.getFoodStats().getSaturationLevel());
 					sat = player.getFoodStats().getFoodLevel() - player.getFoodStats().getSaturationLevel();	
 				}
-				if(Loader.isModLoaded("HungerOverhaul"))
+				if(Loader.isModLoaded("AppleCore"))
 				{
-					AppleCoreInterop.setSaturation(sat,player);
+					AppleCoreInterop.setSaturation(sat, player);
 				}
 				else
 					ObfuscationReflectionHelper.setPrivateValue(FoodStats.class, player.getFoodStats(),(player.getFoodStats().getFoodLevel() + sat), "field_75125_b","foodSaturationLevel");
