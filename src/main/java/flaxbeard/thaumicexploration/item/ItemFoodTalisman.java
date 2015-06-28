@@ -1,5 +1,6 @@
 package flaxbeard.thaumicexploration.item;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,12 +8,15 @@ import java.util.Map;
 
 import com.mojang.authlib.GameProfile;
 
+import cpw.mods.fml.common.Loader;
+import flaxbeard.thaumicexploration.interop.AppleCoreInterop;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.FoodStats;
 import net.minecraft.world.World;
 import thaumcraft.common.config.ConfigItems;
@@ -67,9 +71,17 @@ public class ItemFoodTalisman extends Item {
 				if (player.inventory.getStackInSlot(i) != null) {
 					ItemStack food = player.inventory.getStackInSlot(i);
 					if (isEdible(food, player)) {
-						float sat = ((ItemFood)food.getItem()).func_150906_h(food) * 2;
+						float sat;
+						float heal;
+						if(Loader.isModLoaded("HungerOverhaul")) {
+							sat= AppleCoreInterop.getSaturation(food)*2;
+							heal=AppleCoreInterop.getHeal(food);
+						}
+						else {
+							sat = ((ItemFood) food.getItem()).func_150906_h(food) * 2;
 
-						float heal = ((ItemFood)food.getItem()).func_150905_g(food);
+							heal = ((ItemFood) food.getItem()).func_150905_g(food);
+						}
 						if (par1ItemStack.stackTagCompound.getFloat("food")+(int)heal < 100) {
 							if (par1ItemStack.stackTagCompound.getFloat("saturation") + sat <= 100) {
 								par1ItemStack.stackTagCompound.setFloat("saturation", par1ItemStack.stackTagCompound.getFloat("saturation") + sat);
@@ -96,7 +108,12 @@ public class ItemFoodTalisman extends Item {
 					finalSat = sat - (20 - player.getFoodStats().getFoodLevel());
 					sat = 20 - player.getFoodStats().getFoodLevel();
 				}
-				ObfuscationReflectionHelper.setPrivateValue(FoodStats.class, player.getFoodStats(),  (int) (player.getFoodStats().getFoodLevel() + sat), "field_75127_a","foodLevel");
+				if(Loader.isModLoaded("HungerOverhaul"))
+				{
+					AppleCoreInterop.setHunger((int)sat,player);
+				}
+				else
+					ObfuscationReflectionHelper.setPrivateValue(FoodStats.class, player.getFoodStats(),  (int) (player.getFoodStats().getFoodLevel() + sat), "field_75127_a","foodLevel");
 				par1ItemStack.stackTagCompound.setFloat("food", finalSat);
 				par1ItemStack.setItemDamage(par1ItemStack.getItemDamage());
 			}
@@ -107,7 +124,12 @@ public class ItemFoodTalisman extends Item {
 					finalSat = sat - (player.getFoodStats().getFoodLevel() - player.getFoodStats().getSaturationLevel());
 					sat = player.getFoodStats().getFoodLevel() - player.getFoodStats().getSaturationLevel();	
 				}
-				ObfuscationReflectionHelper.setPrivateValue(FoodStats.class, player.getFoodStats(),(player.getFoodStats().getFoodLevel() + sat), "field_75125_b","foodSaturationLevel");
+				if(Loader.isModLoaded("HungerOverhaul"))
+				{
+					AppleCoreInterop.setSaturation(sat,player);
+				}
+				else
+					ObfuscationReflectionHelper.setPrivateValue(FoodStats.class, player.getFoodStats(),(player.getFoodStats().getFoodLevel() + sat), "field_75125_b","foodSaturationLevel");
 				par1ItemStack.stackTagCompound.setFloat("saturation", finalSat);
 				par1ItemStack.setItemDamage(par1ItemStack.getItemDamage());
 			}
@@ -136,9 +158,29 @@ public class ItemFoodTalisman extends Item {
 					EntityPlayer fakePlayer = new FakePlayerPotion(player.worldObj, new GameProfile(null, "foodTabletPlayer"));
 					fakePlayer.setPosition(0.0F, 999.0F, 0.0F);
 					((ItemFood) food.getItem()).onEaten(food.copy(), player.worldObj, fakePlayer);
-					if (fakePlayer.getActivePotionEffects().size() > 0) {
-						foodCache.put(foodName.toLowerCase(), false);
-						return false;
+					if(Loader.isModLoaded("HungerOverhaul"))
+					{
+						if (fakePlayer.getActivePotionEffects().size() > 1) {
+							foodCache.put(foodName.toLowerCase(), false);
+							return false;
+						}
+						else if(fakePlayer.getActivePotionEffects().size() ==1) {
+							Class<?> clazz = Class.forName("iguanaman.hungeroverhaul.HungerOverhaul");
+							Field fields = clazz.getField("potionWellFed");
+							Potion effect = (Potion) fields.get(null);
+							if (effect != null) {
+								if (fakePlayer.getActivePotionEffect(effect) == null) {
+									foodCache.put(foodName.toLowerCase(), false);
+									return false;
+								}
+							}
+						}
+					}
+					else {
+						if (fakePlayer.getActivePotionEffects().size() > 0) {
+							foodCache.put(foodName.toLowerCase(), false);
+							return false;
+						}
 					}
 				}
 				foodCache.put(foodName.toLowerCase(), true);
